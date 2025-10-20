@@ -163,7 +163,10 @@ Access preferences via:
 
 ## 🖼️ Screenshots
 
-See pictures for detailed visual examples of features.
+**Additional Screenshots:**
+- [Border Effects](docs/screenshot-border-menu.png)
+- [Quick Settings](docs/screenshot-border-quicksettings.png)
+- [More examples in docs/](docs/)
 
 ---
 
