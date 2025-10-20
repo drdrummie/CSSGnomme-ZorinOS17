@@ -1147,6 +1147,8 @@ function fillAdwPreferencesWindow(window) {
         if (interfaceSettings && interfaceSchemeId !== null) {
             try {
                 interfaceSettings.disconnect(interfaceSchemeId);
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 interfaceSettings.run_dispose();
                 interfaceSettings = null;
                 interfaceSchemeId = null;

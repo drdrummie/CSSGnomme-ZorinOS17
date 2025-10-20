@@ -695,6 +695,8 @@ const CSSGnomeExtension = GObject.registerClass(
             // PHASE 4: Settings cleanup
             if (this._interfaceSettings) {
                 try {
+                    // Dispose GSettings to prevent signal leak and memory accumulation.
+                    // GSettings objects maintain signal connections that persist without explicit disposal.
                     this._interfaceSettings.run_dispose();
                 } catch (e) {
                     this._logger.debug("Interface settings already disposed");
@@ -704,6 +706,8 @@ const CSSGnomeExtension = GObject.registerClass(
 
             if (this._settings) {
                 try {
+                    // Dispose GSettings to prevent signal leak and memory accumulation.
+                    // GSettings objects maintain signal connections that persist without explicit disposal.
                     this._settings.run_dispose();
                 } catch (e) {
                     this._logger.debug("Settings already disposed");
@@ -947,6 +951,8 @@ const CSSGnomeExtension = GObject.registerClass(
                     }
                 });
 
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._bgSettings.run_dispose();
                 this._wallpaperSignals = null;
                 this._bgSettings = null;
@@ -1414,6 +1420,8 @@ const CSSGnomeExtension = GObject.registerClass(
 
             // Cleanup interface settings
             if (this._interfaceSettings) {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._interfaceSettings.run_dispose();
                 this._interfaceSettings = null;
             }
@@ -1431,6 +1439,8 @@ const CSSGnomeExtension = GObject.registerClass(
 
             // Cleanup settings
             if (this._settings) {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._settings.run_dispose();
                 this._settings = null;
             }

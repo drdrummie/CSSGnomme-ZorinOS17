@@ -3055,6 +3055,8 @@ ${this.extensionName} GNOME Shell Extension
         // Dispose Settings instances to prevent memory leaks
         if (this._interfaceSettings) {
             try {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._interfaceSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing interface settings: ${e.message}`);
@@ -3064,6 +3066,8 @@ ${this.extensionName} GNOME Shell Extension
 
         if (this._shellSettings) {
             try {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._shellSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing shell settings: ${e.message}`);

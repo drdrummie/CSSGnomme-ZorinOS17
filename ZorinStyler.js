@@ -155,6 +155,8 @@ var ZorinStyler = GObject.registerClass(
          */
         destroy() {
             if (this._zorinSettings) {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._zorinSettings.run_dispose();
                 this._zorinSettings = null;
             }

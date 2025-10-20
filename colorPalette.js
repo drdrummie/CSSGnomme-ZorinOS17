@@ -312,6 +312,8 @@ var ColorPalette = class ColorPalette {
 
             if (pictureFile) {
                 try {
+                    // Dispose Gio.File to prevent file handle leak.
+                    // Gio.File objects can hold references to underlying file descriptors.
                     pictureFile.run_dispose();
                 } catch (e) {
                     this._logger.debug(`Error disposing picture file: ${e.message}`);
@@ -350,6 +352,8 @@ var ColorPalette = class ColorPalette {
 
             // Dispose original pixbuf immediately as we have resized copy
             try {
+                // Memory cleanup: dispose original pixbuf to free uncompressed image data.
+                // Original pixbuf can be 2-5MB for high-resolution wallpapers.
                 pixbuf.run_dispose();
             } catch (e) {
                 this._logger.debug(`Error disposing original pixbuf: ${e.message}`);
@@ -436,6 +440,9 @@ var ColorPalette = class ColorPalette {
         // MEMORY LEAK FIX: Dispose pixbuf after analysis
         if (needsDispose && pixbufToDispose) {
             try {
+                // Critical memory cleanup: GdkPixbuf holds uncompressed RGB data in memory.
+                // Without explicit disposal, pixbuf data persists until garbage collection,
+                // which may be delayed, causing memory accumulation during rapid wallpaper changes.
                 pixbufToDispose.run_dispose();
                 this._logger.debug(`Disposed pixbuf after analysis (${width}x${height})`);
             } catch (e) {
@@ -1204,6 +1211,8 @@ var ColorPalette = class ColorPalette {
         // Cleanup background settings
         if (this._backgroundSettings) {
             try {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._backgroundSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing background settings: ${e.message}`);
@@ -1214,6 +1223,8 @@ var ColorPalette = class ColorPalette {
         // Cleanup interface settings
         if (this._interfaceSettings) {
             try {
+                // Dispose GSettings to prevent signal leak and memory accumulation.
+                // GSettings objects maintain signal connections that persist without explicit disposal.
                 this._interfaceSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing interface settings: ${e.message}`);
