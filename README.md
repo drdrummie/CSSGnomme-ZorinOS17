@@ -33,8 +33,8 @@
 - **Shell Component Styling**: Enhanced visual consistency across panels, menus, and system UI
 
 ### 🎛️ **Customizable Transparency**
-- **Panel Opacity**: Control main taskbar/panel transparency (0-100%)
-- **Menu Opacity**: Separate opacity control for popup menus (0-100%)
+- **Panel Opacity**: Control main taskbar/panel transparency (10-100%)
+- **Menu Opacity**: Separate opacity control for popup menus (10-100%)
 - **Color Overrides**: Manually set panel and popup background colors with full RGBA support
 - **Border Radius**: Auto-detect or manually set rounded corners (0-25px)
 
