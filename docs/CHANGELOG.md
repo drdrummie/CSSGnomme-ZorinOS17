@@ -105,7 +105,7 @@ Starting with v1.4, version numbers follow semantic versioning:
 All versions are backward compatible within the 1.x series. Settings are preserved across updates.
 
 ### Platform Support
-- **Supported**: GNOME Shell 43, 44 (Zorin OS 17.3, Ubuntu 22.04+, Fedora 38)
+- **Supported**: GNOME Shell 43, 44 (Tested on Zorin OS 17.3 Core, should support Ubuntu 22.04+, Fedora 38)
 - **Not Supported**: GNOME 45+ (different API - see separate branch if available)
 
 ---

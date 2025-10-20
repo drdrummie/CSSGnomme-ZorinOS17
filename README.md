@@ -79,16 +79,17 @@ Then restart GNOME Shell and enable the extension.
 ### Getting Started
 
 1. **Enable the Extension**: Use GNOME Extensions app or the system tray icon
-2. **Open Preferences**: Right-click the system tray icon → "Preferences"
+2. **Open Preferences**: Click the system tray icon → "Open Settings"
 3. **Choose Base Theme**: Select your preferred GTK theme from the dropdown
 4. **Enable Overlay**: Toggle "Enable Overlay Theme" to activate
 5. **Customize**: Adjust transparency, blur effects, and colors to your liking
+6. **Disable notifications**: If too distracting for your taste
 
 ### Quick Actions (System Tray Menu)
 
 - **Extract Colors from Wallpaper**: One-click color extraction
 - **Enable/Disable Overlay**: Quick toggle without opening preferences
-- **Preferences**: Open full settings dialog
+- **Open Settings**: Open full settings dialog
 
 ### Recommended Settings
 
@@ -107,8 +108,13 @@ Then restart GNOME Shell and enable the extension.
 **For Wallpaper-Driven Theme:**
 - Enable "Auto Color Extraction"
 - Enable "Override Panel Color"
-- Enable "Override Popup Color"
-- Adjust blur to taste
+- Enable "Override Popup Color" (optionally)
+- Set transparency, border-radius
+- Adjust blur to taste (play with border and other settings)
+- **Experimental** - Full wallpaper autodriven mode
+
+**Border radius = 0:**
+- Deeply shadowed backgrounds of shell elements 
 
 ---
 
@@ -151,7 +157,7 @@ Access preferences via:
 **Zorin Integration:**
 - Enable Zorin taskbar enhancements
 - Taskbar opacity control
-- Theme tint adjustment
+- Theme tint adjustment (decreased where possible)
 
 ---
 
@@ -240,7 +246,7 @@ This project is licensed under the **GNU General Public License v3.0** - see [LI
 
 - GNOME Shell team for the extension API
 - Zorin OS team for the excellent desktop environment
-- CSS Panels (Cinnamon) and Open Bar extensions for inspiration
+- CSS Panels (Cinnamon Mint) and Open Bar extensions for inspiration
 
 ---
 
