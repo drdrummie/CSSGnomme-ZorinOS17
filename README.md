@@ -16,7 +16,7 @@
 
 ### 🔄 **Dynamic Theme Overlay System**
 - **Non-Destructive**: Creates a custom theme overlay in `~/.themes/CSSGnomme/` that inherits from your current GTK theme
-- **Live Updates**: Automatically updates CSS when settings change with smooth transitions
+- **Live Updates**: Automatically updates CSS when settings (may flicker because css needs to reload)
 - **One-Click Toggle**: Enable/disable the overlay system without losing your configuration
 - **Theme Preservation**: Automatically restores your original theme when disabling the overlay
 
@@ -24,13 +24,12 @@
 - **Full Backdrop Control**: Adjust blur radius (1-50px), saturation, contrast, and brightness independently
 - **Custom Tinting**: Apply semi-transparent color overlays for unique glass effects
 - **Border Customization**: Define border color, width (0-5px), and opacity for framed appearance
-- **Smooth Transitions**: Configurable animation duration for blur effect changes
 - **Universal Application**: Blur effects apply to popup menus, Alt+Tab switcher, and other shell elements
 
 ### 🖥️ **Zorin OS Integration**
-- **Taskbar Enhancement**: Special integration with Zorin Taskbar for consistent styling
-- **Floating Panel Effect**: Automatically enables floating panel effect when border-radius is applied
-- **Tint Control**: Adjust Zorin theme color tint intensity (0-100%)
+- **Taskbar Enhancement**: Special integration with Zorin Taskbar for consistent styling and Zorin's "inegrated" features
+- **Floating Panel Effect**: Automatically enables floating panel effect when border-radius is applied (Zorin intellihide option)
+- **Tint Control**: Removes Zorin theme color tint intensity (with various success)
 - **Shell Component Styling**: Enhanced visual consistency across panels, menus, and system UI
 
 ### 🎛️ **Customizable Transparency**
@@ -193,6 +192,7 @@ See [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for detailed list of limitations and
 - **Wallpaper Memory Leak**: GNOME Shell 43.9 has a memory leak with wallpaper changes (external bug). Avoid frequent wallpaper switching.
 - **Dark/Light Toggle Performance**: Multiple theme toggles can impact performance. Restart GNOME Shell if needed.
 - **GdkPixbuf Memory**: Minor memory residual after color extraction (~0.1-0.2MB per wallpaper).
+- **Could affect apps too but it can be adjusted (i.e. remove transparency and / or choose wanted color manually)**
 
 ---
 
@@ -257,8 +257,8 @@ This project is licensed under the **GNU General Public License v3.0** - see [LI
 
 **Best Performance:**
 - Disable auto-color extraction if you don't change wallpapers often
+- Set your desired "style"
 - Use moderate blur radius (10-20px) for best balance
-- Enable caching to improve responsiveness
 
 **Visual Consistency:**
 - Match border-radius across all elements for cohesive look
