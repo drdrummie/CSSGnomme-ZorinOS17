@@ -112,7 +112,7 @@ Then restart GNOME Shell and enable the extension.
 
 ---
 
-## 🎯 Quick Start
+## 🚀 Quick Start
 
 ### Getting Started
 
@@ -131,7 +131,7 @@ Then restart GNOME Shell and enable the extension.
 
 For detailed setup instructions, see [Quick Guide](docs/QUICK_GUIDE_ZOS17.md).
 
-## � Troubleshooting
+## 🔧 Troubleshooting
 
 **Extension not appearing after install:**
 
@@ -188,29 +188,6 @@ See [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for detailed list of limitations and
 
 ---
 
-## � Tips & Tricks
-
-**Best Performance:**
-
-- Use moderate blur radius (10-20px) for best balance
-- Disable auto-color extraction if you don't change wallpapers often
-- Restart GNOME Shell periodically to clear GNOME 43 memory leaks
-
-**Visual Consistency:**
-
-- Match border-radius across all elements for cohesive look
-- Use extracted colors for best integration with wallpaper
-- Adjust saturation for more vibrant or muted appearance
-
-**Troubleshooting:**
-
-- If UI doesn't update: Restart GNOME Shell (`Alt+F2` → `r` on X11)
-- If colors look wrong: Re-extract from wallpaper
-- If performance issues: Reduce blur radius or disable blur
-- For memory issues: Avoid frequent wallpaper changes (GNOME 43 bug)
-
----
-
 ## 💡 Tips & Tricks
 
 **Best Performance:**
@@ -234,7 +211,7 @@ See [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for detailed list of limitations and
 
 ---
 
-## �📄 License
+## 📄 License
 
 This project is licensed under the **GNU General Public License v3.0** - see [LICENSE](LICENSE) for details.
 
