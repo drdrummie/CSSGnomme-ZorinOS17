@@ -178,6 +178,7 @@ gnome-extensions list --enabled
 - **Performance**: Complex blur effects may impact performance on older hardware
 
 See [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for detailed list of limitations and workarounds.
+See [CHANGELOG.md](docs/CHANGELOG.md) for version history and detailed release notes.
 
 **Quick Summary:**
 
