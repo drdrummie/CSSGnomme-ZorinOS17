@@ -49,7 +49,7 @@
 
 **Additional Screenshots:**
 
-- [Border Effects](docs/screenshot-border-menu.png)
+- [Border Effects (menu)](docs/screenshot-border-menu.png)
 - [Quick Settings](docs/screenshot-border-quicksettings.png)
 - [More examples in docs/](docs/)
 
