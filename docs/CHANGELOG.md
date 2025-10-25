@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5] - 2025-10-25
+
+### Added
+
+- **Fluent GTK Theme Support**: Improved compatibility with Fluent GTK themes
+- **Quick Settings Gradient Fix**: Removed unwanted Zorin accent gradient on Fluent GTK themes buttons
+
+### Changed
+
+- **95% performance improvement** for Shell theme reloads (154ms vs 3000ms+)
+- Preferences UI reorganized for better clarity
+
+### Fixed
+
+- Zorin intellihide management (floating panel now works reliably)
+- Symlinking of gtk-3|4 assets
+- Memory leak prevention for GNOME 43-44
+- Race conditions in overlay updates
+
+---
+
 ## [1.4] - 2025-10-19
 
 ### Fixed

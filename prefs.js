@@ -366,12 +366,22 @@ function fillAdwPreferencesWindow(window) {
     zorinIntegrationRow.activatable_widget = zorinIntegrationSwitch;
     themeIntegrationGroup.add(zorinIntegrationRow);
 
+    // Auto-detect radius (moved from Colors Settings page for better organization)
+    const autoDetectRadiusRow = new Adw.ActionRow({
+        title: _('Auto-detect theme border radius'),
+        subtitle: _('Automatically detect and use border-radius from current theme')
+    });
+    const autoDetectRadiusSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+    settings.bind('auto-detect-radius', autoDetectRadiusSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+    autoDetectRadiusRow.add_suffix(autoDetectRadiusSwitch);
+    autoDetectRadiusRow.set_activatable_widget(autoDetectRadiusSwitch);
+    themeIntegrationGroup.add(autoDetectRadiusRow);
+
     overlayPage.add(themeIntegrationGroup);
 
     // Automatic Color Extraction Group
     const colorExtractionGroup = new Adw.PreferencesGroup({
-        title: _('Automatic Color Extraction'),
-        description: _('Extract colors from your wallpaper and apply them automatically')
+        title: _('Automatic Color Extraction')
     });
 
     // Auto-extract on wallpaper change
@@ -409,8 +419,7 @@ function fillAdwPreferencesWindow(window) {
 
     // Manual Controls Group
     const manualControlGroup = new Adw.PreferencesGroup({
-        title: _('Manual Controls'),
-        description: _('Manually trigger overlay updates or rebuild from scratch')
+        title: _('Manual Controls')
     });
 
     // Apply changes now button
@@ -551,6 +560,17 @@ function fillAdwPreferencesWindow(window) {
         title: _('Panel Appearance')
     });
 
+    // Apply panel radius (moved to top of group for better organization)
+    const applyPanelRadiusRow = new Adw.ActionRow({
+        title: _('Enable bordered floating mode'),
+        subtitle: _('Enables bordered floating mode with intellihide activated')
+    });
+    const applyPanelRadiusSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+    settings.bind('apply-panel-radius', applyPanelRadiusSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+    applyPanelRadiusRow.add_suffix(applyPanelRadiusSwitch);
+    applyPanelRadiusRow.set_activatable_widget(applyPanelRadiusSwitch);
+    panelOptionsGroup.add(applyPanelRadiusRow);
+
     // Override panel color
     const overridePanelColorRow = new Adw.ActionRow({
         title: _('Override panel color'),
@@ -661,36 +681,7 @@ function fillAdwPreferencesWindow(window) {
     borderRadiusRow.add_suffix(borderRadiusSpinButton);
     panelOptionsGroup.add(borderRadiusRow);
 
-    // Apply panel radius
-    const applyPanelRadiusRow = new Adw.ActionRow({
-        title: _('Apply border radius to main panel'),
-        subtitle: _('Enable rounded corners on taskbar for modern appearance')
-    });
-    const applyPanelRadiusSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
-    settings.bind('apply-panel-radius', applyPanelRadiusSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
-    applyPanelRadiusRow.add_suffix(applyPanelRadiusSwitch);
-    applyPanelRadiusRow.set_activatable_widget(applyPanelRadiusSwitch);
-    panelOptionsGroup.add(applyPanelRadiusRow);
-
     transparencyPage.add(panelOptionsGroup);
-
-    // Theme integration group (legacy - TODO: move to Appearance page)
-    const legacyThemeIntegrationGroup = new Adw.PreferencesGroup({
-        title: _('Theme Integration')
-    });
-
-    // Auto-detect radius
-    const autoDetectRadiusRow = new Adw.ActionRow({
-        title: _('Auto-detect theme border radius'),
-        subtitle: _('Automatically detect and use border-radius from current theme')
-    });
-    const autoDetectRadiusSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
-    settings.bind('auto-detect-radius', autoDetectRadiusSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
-    autoDetectRadiusRow.add_suffix(autoDetectRadiusSwitch);
-    autoDetectRadiusRow.set_activatable_widget(autoDetectRadiusSwitch);
-    legacyThemeIntegrationGroup.add(autoDetectRadiusRow);
-
-    transparencyPage.add(legacyThemeIntegrationGroup);
 
     window.add(transparencyPage);
 
@@ -868,6 +859,13 @@ function fillAdwPreferencesWindow(window) {
     blurBorderWidthRow.add_suffix(blurBorderWidthSpinButton);
     customBlurGroup.add(blurBorderWidthRow);
 
+    blurPage.add(customBlurGroup);
+
+    // Shadow Settings Group (separated for better organization)
+    const shadowGroup = new Adw.PreferencesGroup({
+        title: _('Shadow Settings')
+    });
+
     // Shadow strength (outer glow spread control)
     const shadowStrengthRow = new Adw.ActionRow({
         title: _('Shadow strength'),
@@ -885,7 +883,7 @@ function fillAdwPreferencesWindow(window) {
     });
     settings.bind('shadow-strength', shadowStrengthSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
     shadowStrengthRow.add_suffix(shadowStrengthSpinButton);
-    customBlurGroup.add(shadowStrengthRow);
+    shadowGroup.add(shadowStrengthRow);
 
     // Shadow color (new row)
     const shadowColorRow = new Adw.ActionRow({
@@ -920,7 +918,9 @@ function fillAdwPreferencesWindow(window) {
     settingsConnections.push(shadowColorId);
 
     shadowColorRow.add_suffix(shadowColorButton);
-    customBlurGroup.add(shadowColorRow);
+    shadowGroup.add(shadowColorRow);
+
+    blurPage.add(shadowGroup);
 
     // Blur opacity
     const blurOpacityRow = new Adw.ActionRow({
@@ -979,10 +979,9 @@ function fillAdwPreferencesWindow(window) {
 
     advancedPage.add(indicatorGroup);
 
-    // Theme Auto-Switching Group (Advanced)
-    const themeFilteringGroup = new Adw.PreferencesGroup({
-        title: _('Automatic Theme Variant Switching'),
-        description: _('Automatically switch between Light/Dark theme variants when toggling appearance in Quick Settings')
+    // Automation Features Group (consolidated theme switching + color extraction)
+    const automationGroup = new Adw.PreferencesGroup({
+        title: _('Automation Features')
     });
 
     // Auto-switch theme variant switch
@@ -996,7 +995,7 @@ function fillAdwPreferencesWindow(window) {
     settings.bind('auto-switch-color-scheme', autoSwitchColorSchemeSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
     autoSwitchColorSchemeRow.add_suffix(autoSwitchColorSchemeSwitch);
     autoSwitchColorSchemeRow.activatable_widget = autoSwitchColorSchemeSwitch;
-    themeFilteringGroup.add(autoSwitchColorSchemeRow);
+    automationGroup.add(autoSwitchColorSchemeRow);
 
     // Info label for auto-switch behavior
     const filterInfoRow = new Adw.ActionRow({
@@ -1004,15 +1003,7 @@ function fillAdwPreferencesWindow(window) {
         subtitle: _('When enabled: Quick Settings toggle automatically switches your theme between -Dark and -Light variants. Dropdown shows only themes matching current appearance. When disabled: Manual theme selection, all themes shown.')
     });
     filterInfoRow.set_sensitive(false); // Non-interactive info label
-    themeFilteringGroup.add(filterInfoRow);
-
-    advancedPage.add(themeFilteringGroup);
-
-    // Full Auto Mode group
-    const fullAutoModeGroup = new Adw.PreferencesGroup({
-        title: _('Color Extraction Mode'),
-        description: _('Control how wallpaper colors are applied to blur effects')
-    });
+    automationGroup.add(filterInfoRow);
 
     // Full Auto Mode switch
     const fullAutoModeRow = new Adw.ActionRow({
@@ -1023,16 +1014,16 @@ function fillAdwPreferencesWindow(window) {
     settings.bind('full-auto-mode', fullAutoModeSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
     fullAutoModeRow.add_suffix(fullAutoModeSwitch);
     fullAutoModeRow.set_activatable_widget(fullAutoModeSwitch);
-    fullAutoModeGroup.add(fullAutoModeRow);
+    automationGroup.add(fullAutoModeRow);
 
     // Info label explaining modes
     const modeInfoRow = new Adw.ActionRow({
         title: 'ℹ️ ' + _('Standard: Theme accent + Wallpaper backgrounds | Full Auto: Wallpaper controls everything')
     });
     modeInfoRow.set_sensitive(false); // Non-interactive info label
-    fullAutoModeGroup.add(modeInfoRow);
+    automationGroup.add(modeInfoRow);
 
-    advancedPage.add(fullAutoModeGroup);
+    advancedPage.add(automationGroup);
 
     // Debugging group
     const debuggingGroup = new Adw.PreferencesGroup({
@@ -1063,19 +1054,12 @@ function fillAdwPreferencesWindow(window) {
         title: _('CSS Gnommé - Dynamic GTK Theme Overlay for Zorin OS')
     });
 
-    // Version info
-    const versionRow = new Adw.ActionRow({
-        title: _('Version'),
-        subtitle: _('1.4')
+    // Combined version and author info
+    const infoRow = new Adw.ActionRow({
+        title: _('Version') + ': 1.5 | ' + _('Author') + ': drdrummie',
+        subtitle: _('Developed for Zorin OS 17.3 (GNOME Shell 43-44), inspired by Cinnamon CSS Panels and gnome Open Bar extensions.')
     });
-    aboutGroup.add(versionRow);
-
-    // Author info
-    const authorRow = new Adw.ActionRow({
-        title: _('Author') + ': drdrummie',
-        subtitle: _('Developed for Zorin OS 17.3 (GNOME Shell 43-44), inspired by Cinnamon CSS Panels and gnome Open Bar extensions.'),
-    });
-    aboutGroup.add(authorRow);
+    aboutGroup.add(infoRow);
 
     aboutPage.add(aboutGroup);
 
@@ -1147,8 +1131,9 @@ function fillAdwPreferencesWindow(window) {
         if (interfaceSettings && interfaceSchemeId !== null) {
             try {
                 interfaceSettings.disconnect(interfaceSchemeId);
-                // Dispose GSettings to prevent signal leak and memory accumulation.
-                // GSettings objects maintain signal connections that persist without explicit disposal.
+                // Dispose interface settings used for color-scheme monitoring.
+                // This temporary Settings instance is created in theme filter setup
+                // and must be disposed to prevent memory leak in preferences dialog.
                 interfaceSettings.run_dispose();
                 interfaceSettings = null;
                 interfaceSchemeId = null;

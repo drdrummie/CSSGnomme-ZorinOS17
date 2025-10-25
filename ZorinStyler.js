@@ -20,7 +20,7 @@ var ZorinStyler = GObject.registerClass(
             this._settings = settings;
             this._zorinSettings = null;
             this._isConnected = false;
-            this._originalIntellihideState = undefined; // Track original intellihide state
+            this._originalIntellihideState = null; // Track original intellihide state
 
             // Use provided logger or create fallback log function
             if (logger) {
@@ -113,7 +113,7 @@ var ZorinStyler = GObject.registerClass(
         /**
          * Manage Zorin intellihide to create floating panel effect
          * When user enables panel radius, we enable Zorin's intellihide for floating effect
-         * Stores original intellihide state for restoration
+         * Stores original intellihide state for restoration on extension disable
          * @param {boolean} enableFloating - Enable floating panel via intellihide
          */
         manageFloatingPanel(enableFloating) {
@@ -123,30 +123,36 @@ var ZorinStyler = GObject.registerClass(
             }
 
             try {
-                if (enableFloating) {
-                    // Save original intellihide state (if not already saved)
-                    if (!this._originalIntellihideState !== undefined) {
-                        this._originalIntellihideState = this._zorinSettings.get_boolean('intellihide');
-                        this._logger.debug(`Saved original intellihide state: ${this._originalIntellihideState}`);
-                    }
-
-                    // Enable intellihide for floating effect
-                    if (!this._originalIntellihideState) {
-                        this._zorinSettings.set_boolean('intellihide', true);
-                        this._logger.info('Enabled Zorin intellihide for floating panel effect');
-                    } else {
-                        this._logger.debug('Intellihide already enabled by user - preserving');
-                    }
-                } else {
-                    // Restore original intellihide state
-                    if (this._originalIntellihideState !== undefined) {
-                        this._zorinSettings.set_boolean('intellihide', this._originalIntellihideState);
-                        this._logger.info(`Restored Zorin intellihide to original state: ${this._originalIntellihideState}`);
-                        this._originalIntellihideState = undefined;
-                    }
+                // Save original intellihide state ONCE (on first call)
+                if (this._originalIntellihideState === null) {
+                    this._originalIntellihideState = this._zorinSettings.get_boolean('intellihide');
+                    this._logger.debug(`Saved original intellihide state: ${this._originalIntellihideState}`);
                 }
+
+                // Always set intellihide to match enableFloating (idempotent)
+                this._zorinSettings.set_boolean('intellihide', enableFloating);
+                this._logger.info(`Set Zorin intellihide to ${enableFloating} (${enableFloating ? 'floating panel' : 'fixed panel'})`);
             } catch (e) {
                 this._logger.error(`Error managing floating panel: ${e.message}`);
+            }
+        }
+
+        /**
+         * Restore original intellihide state (called on extension disable/destroy)
+         */
+        restoreIntellihide() {
+            if (!this._isConnected) {
+                return;
+            }
+
+            try {
+                if (this._originalIntellihideState !== null) {
+                    this._zorinSettings.set_boolean('intellihide', this._originalIntellihideState);
+                    this._logger.info(`Restored Zorin intellihide to original state: ${this._originalIntellihideState}`);
+                    this._originalIntellihideState = null;
+                }
+            } catch (e) {
+                this._logger.error(`Error restoring intellihide: ${e.message}`);
             }
         }
 
@@ -155,8 +161,9 @@ var ZorinStyler = GObject.registerClass(
          */
         destroy() {
             if (this._zorinSettings) {
-                // Dispose GSettings to prevent signal leak and memory accumulation.
-                // GSettings objects maintain signal connections that persist without explicit disposal.
+                // Dispose Zorin taskbar settings to prevent memory leak.
+                // ZorinStyler connects to external extension schema and must
+                // properly dispose GSettings to avoid dconf backend accumulation.
                 this._zorinSettings.run_dispose();
                 this._zorinSettings = null;
             }

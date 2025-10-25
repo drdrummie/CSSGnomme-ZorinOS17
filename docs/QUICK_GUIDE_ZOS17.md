@@ -207,7 +207,6 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 **Project information, version, and How It Works explanation.**
 
 - **Version**: Current extension version
-- **Links**: GitHub repository, issue tracker, documentation
 - **How It Works**: Detailed explanation of overlay system, color extraction, and CSS generation
 
 ---

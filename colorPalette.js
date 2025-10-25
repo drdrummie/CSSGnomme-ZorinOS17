@@ -196,6 +196,14 @@ var ColorPalette = class ColorPalette {
                 return this.getDefaultPalette();
             }
 
+            // Log memory state before pixbuf loading (for leak analysis)
+            try {
+                const memBeforePixbuf = this._getMemoryUsageMB();
+                this._logger.debug(`🧠 Memory before pixbuf load: ${memBeforePixbuf}MB`);
+            } catch (e) {
+                this._logger.debug(`Could not measure memory: ${e.message}`);
+            }
+
             // MEMORY LEAK FIX: Use new_from_stream_at_scale instead of new_from_file
             // This loads and scales the image in ONE operation, using 5-10x less memory
             inputStream = pictureFile.read(null);
@@ -243,6 +251,14 @@ var ColorPalette = class ColorPalette {
 
             // Schedule persistent cache save (debounced to prevent excessive disk I/O)
             this._schedulePersistentCacheSave();
+
+            // Log memory state after pixbuf dispose (before GC)
+            try {
+                const memAfterDispose = this._getMemoryUsageMB();
+                this._logger.debug(`🧠 Memory after pixbuf dispose: ${memAfterDispose}MB`);
+            } catch (e) {
+                this._logger.debug(`Could not measure memory: ${e.message}`);
+            }
 
             // MEMORY LEAK FIX: Force GC after pixbuf disposal to clean native memory
             // GdkPixbuf allocates uncompressed RGB data (even scaled 800x600 = ~2MB)
@@ -313,7 +329,10 @@ var ColorPalette = class ColorPalette {
             if (pictureFile) {
                 try {
                     // Dispose Gio.File to prevent file handle leak.
-                    // Gio.File objects can hold references to underlying file descriptors.
+                    // Gio.File objects can hold onto file descriptors and filesystem handles
+                    // especially when created with new_for_uri() for wallpaper files.
+                    // Without explicit disposal, repeated wallpaper analysis can exhaust
+                    // available file handles on systems with low ulimits.
                     pictureFile.run_dispose();
                 } catch (e) {
                     this._logger.debug(`Error disposing picture file: ${e.message}`);
@@ -350,10 +369,12 @@ var ColorPalette = class ColorPalette {
             );
             this._logger.info(`Resized image to ${resizedPixbuf.get_width()}x${resizedPixbuf.get_height()} for analysis`);
 
-            // Dispose original pixbuf immediately as we have resized copy
+            // Dispose original pixbuf immediately as we have resized copy.
+            // MEMORY OPTIMIZATION: Original full-size pixbuf can be 10-50MB uncompressed.
+            // Since we have a resized copy for analysis, disposing the original immediately
+            // prevents holding both full-size + resized versions in memory simultaneously.
+            // This is critical for large wallpapers (4K/8K) to prevent excessive RAM usage.
             try {
-                // Memory cleanup: dispose original pixbuf to free uncompressed image data.
-                // Original pixbuf can be 2-5MB for high-resolution wallpapers.
                 pixbuf.run_dispose();
             } catch (e) {
                 this._logger.debug(`Error disposing original pixbuf: ${e.message}`);
@@ -437,12 +458,13 @@ var ColorPalette = class ColorPalette {
             .slice(0, maxColors)
             .map(([colorKey]) => this.parseColorKey(colorKey));
 
-        // MEMORY LEAK FIX: Dispose pixbuf after analysis
+        // MEMORY LEAK FIX: Dispose pixbuf after analysis.
+        // CRITICAL for GNOME Shell 43-44: GdkPixbuf objects accumulate in memory
+        // even after going out of scope. Each analysis can leak 2-5MB of pixel data.
+        // Without explicit disposal, wallpaper analysis becomes prohibitively expensive
+        // after 10+ iterations, potentially causing system instability.
         if (needsDispose && pixbufToDispose) {
             try {
-                // Critical memory cleanup: GdkPixbuf holds uncompressed RGB data in memory.
-                // Without explicit disposal, pixbuf data persists until garbage collection,
-                // which may be delayed, causing memory accumulation during rapid wallpaper changes.
                 pixbufToDispose.run_dispose();
                 this._logger.debug(`Disposed pixbuf after analysis (${width}x${height})`);
             } catch (e) {
@@ -601,6 +623,11 @@ var ColorPalette = class ColorPalette {
             const isDarkTheme = ThemeUtils.getBgDark(...colorScheme.background);
             const accentColor = colorScheme.accent;
 
+            // === BATCH SETTINGS MODE - Prevent callback storm ===
+            // Panel + popup + potential blur settings → multiple callbacks without batch
+            // With delay/apply: Multiple settings → 1 callback (improved performance)
+            settings.delay();
+
             // Enable panel override only - popup override remains manual
             settings.set_boolean('override-panel-color', true);
             // NOTE: override-popup-color is NOT auto-enabled - user must enable manually
@@ -675,7 +702,18 @@ var ColorPalette = class ColorPalette {
             this._logger.info(`  Panel: ${panelColor}`);
             this._logger.info(`  Popup: ${popupColor} (override not auto-enabled)`);
 
+            // === APPLY BATCH SETTINGS - Single callback ===
+            settings.apply();
+
         } catch (e) {
+            // Error path - apply batch settings if delay() was called
+            try {
+                if (settings.get_has_unapplied && settings.get_has_unapplied()) {
+                    settings.apply();
+                }
+            } catch (applyError) {
+                this._logger.error(`Error applying delayed color settings: ${applyError.message}`);
+            }
             this._logger.error(`Error applying colors: ${e.message}`);
         }
     }
@@ -1211,8 +1249,9 @@ var ColorPalette = class ColorPalette {
         // Cleanup background settings
         if (this._backgroundSettings) {
             try {
-                // Dispose GSettings to prevent signal leak and memory accumulation.
-                // GSettings objects maintain signal connections that persist without explicit disposal.
+                // Dispose GSettings to prevent memory leak in GNOME Shell 43-44.
+                // Settings objects retain references to dconf backends and signal handlers
+                // that can accumulate across extension enable/disable cycles.
                 this._backgroundSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing background settings: ${e.message}`);
@@ -1223,8 +1262,9 @@ var ColorPalette = class ColorPalette {
         // Cleanup interface settings
         if (this._interfaceSettings) {
             try {
-                // Dispose GSettings to prevent signal leak and memory accumulation.
-                // GSettings objects maintain signal connections that persist without explicit disposal.
+                // Dispose GSettings singleton to prevent memory leak.
+                // Interface settings monitor color-scheme changes and can leak
+                // signal handlers if not properly disposed on ColorPalette destruction.
                 this._interfaceSettings.run_dispose();
             } catch (e) {
                 this._logger.warn(`Error disposing interface settings: ${e.message}`);
