@@ -83,6 +83,11 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 
 #### Panel Appearance
 
+- **Enable bordered floating mode**: Control whether panel itself gets rounded
+  - ✅ ON: Panel has rounded corners (enables Zorin floating panel effect by turnng intellihide on)
+  - ❌ OFF: Only menus/popups are rounded
+  - **Note**: Zorin uses inline css so currently extension cannot control panel's border-radius
+
 - **Override panel color**: Use custom color instead of extracted wallpaper color
   - Enable to manually choose panel background color
   - Useful if extracted color doesn't match your preference
@@ -95,17 +100,15 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
   - Recommended to keep similar to panel color for consistency
 
 - **Choose override popup color**: RGBA picker for menu backgrounds
+  - Full control over popup background (supports transparency via alpha channel)
+  - Only active when "Override popup color" is enabled
 
 - **Border Radius** (0-25px): Roundness of panel corners
   - **0px**: Square corners (flat design)
   - **8-12px**: Moderately rounded (modern)
   - **15-25px**: Heavily rounded (macOS-style)
 
-- **Apply border radius to main panel**: Control whether panel itself gets rounded
-  - ✅ ON: Panel has rounded corners (enables Zorin floating panel effect)
-  - ❌ OFF: Only menus/popups are rounded
-
-  - **Auto-detect theme border radius**: Automatically match your theme's rounded corners
+- **Auto-detect theme border radius**: Automatically match your theme's rounded corners
   - ✅ ON: CSS Gnomme detects border-radius from active theme
   - ❌ OFF: Use manual Border Radius slider in Color Settings
 
@@ -181,12 +184,15 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
   - Settings still accessible via Extensions app
   - **Use case:** Minimize clutter after setup is complete
 
-#### Theme Filtering
+#### Automation
 
 - **Auto-switch color scheme**: Automatically switch between Light/Dark theme variants
   - ✅ ON: Detects system Dark Mode toggle, switches to matching theme variant
   - Example: ZorinPurple-Light ↔ ZorinPurple-Dark
   - **Note:** Dropdown will only show matching variants (Light OR Dark, not both)
+
+  - **Full auto mode (experimental)**: Wallpaper driven mode for shell elements
+  - ✅ ON: Uses wallpaper dominant colors to set color of shell elements
 
 #### Debugging
 
