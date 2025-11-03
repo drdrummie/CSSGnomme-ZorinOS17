@@ -117,10 +117,10 @@
     </key>
 
     <key name="shadow-strength" type="d">
-      <range min="0.0" max="0.8"/>
-      <default>0.3</default>
-      <summary>Shadow spread (outer glow)</summary>
-      <description>Controls the spread radius of box-shadow effects - how wide the outer glow appears around panels and menus. 0.0 = no visible shadow, 0.3 = subtle depth (12px, recommended), 0.5 = medium halo (20px), 0.8 = wide glow (32px). Works independently of shadow color opacity.</description>
+      <range min="0.0" max="1.0"/>
+      <default>0.4</default>
+      <summary>Shadow strength (dynamic blur control)</summary>
+      <description>Controls the shadow blur intensity for all UI elements. 0.0 = no shadow, 0.4 = default (12px panel), 0.6 = medium (18px panel), 1.0 = maximum glow (30px panel). Values scale proportionally for popup/button/inset shadows maintaining visual hierarchy.</description>
     </key>
 
     <key name="shadow-color" type="s">
@@ -239,6 +239,19 @@
       <default>false</default>
       <summary>Full Auto Mode - Wallpaper Controls All Colors</summary>
       <description>When enabled, wallpaper color extraction controls ALL styling including blur effects (border, background, shadow). Standard mode: theme controls blur effects, wallpaper controls panel/popup. Full Auto: wallpaper controls everything.</description>
+    </key>
+
+    <!-- Icon Theme Override settings (v1.5.4) -->
+    <key name="manual-icon-theme-override" type="b">
+      <default>false</default>
+      <summary>Manual Icon Theme Override</summary>
+      <description>When enabled, allows manual selection of icon theme independently from GTK theme. Useful for themes without matching icon packs (e.g., Fluent GTK without Fluent icons). When disabled, uses source theme's icon theme automatically.</description>
+    </key>
+
+    <key name="selected-icon-theme" type="s">
+      <default>'Adwaita'</default>
+      <summary>Selected Icon Theme</summary>
+      <description>Icon theme to use when manual icon theme override is enabled. Only applies when manual override is active. Scanned from ~/.icons, ~/.local/share/icons, and /usr/share/icons.</description>
     </key>
 
     <!-- Debug settings -->
