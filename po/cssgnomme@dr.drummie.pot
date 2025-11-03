@@ -1,0 +1,592 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-03 17:57+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/extension.js:120
+msgid "Extract Colors from Background"
+msgstr ""
+
+#: src/extension.js:126 src/extension.js:163
+msgid "Enable GTK Theme Overlay"
+msgstr ""
+
+#: src/extension.js:131
+msgid "Apply Overlay Changes"
+msgstr ""
+
+#: src/extension.js:139
+msgid "Open Settings"
+msgstr ""
+
+#: src/extension.js:864
+msgid "Colors extracted and applied from background image"
+msgstr ""
+
+#: src/extension.js:871
+msgid "No background image found or unable to extract colors"
+msgstr ""
+
+#: src/extension.js:876
+msgid "Error extracting colors: "
+msgstr ""
+
+#: src/extension.js:984
+msgid "Overlay theme is not enabled"
+msgstr ""
+
+#: src/extension.js:1012
+msgid "Overlay theme updated successfully"
+msgstr ""
+
+#: src/extension.js:1015
+msgid "Failed to update overlay theme"
+msgstr ""
+
+#: src/extension.js:1020 src/extension.js:1245
+msgid "Error: "
+msgstr ""
+
+#: src/extension.js:1073
+msgid "Overlay theme created and activated"
+msgstr ""
+
+#: src/extension.js:1076
+msgid "Failed to create overlay theme"
+msgstr ""
+
+#: src/extension.js:1102
+msgid "Error enabling overlay: "
+msgstr ""
+
+#: src/extension.js:1130
+msgid "Overlay theme disabled"
+msgstr ""
+
+#: src/extension.js:1133
+msgid "Error disabling overlay: "
+msgstr ""
+
+#: src/extension.js:1235
+msgid "Overlay theme recreated and applied"
+msgstr ""
+
+#: src/extension.js:1236
+msgid "Overlay theme recreated (enable to apply)"
+msgstr ""
+
+#: src/extension.js:1240
+msgid "Failed to recreate overlay"
+msgstr ""
+
+#: src/prefs.js:224
+msgid "Theme Overlay"
+msgstr ""
+
+#: src/prefs.js:230
+msgid "Theme Integration"
+msgstr ""
+
+#: src/prefs.js:231
+msgid ""
+"CSS Gnomme creates a dynamic overlay theme that sits on top of your current "
+"theme"
+msgstr ""
+
+#: src/prefs.js:236
+msgid "Enable Overlay Theme"
+msgstr ""
+
+#: src/prefs.js:237
+msgid "Activate CSS Gnomme overlay with custom styling and color extraction"
+msgstr ""
+
+#: src/prefs.js:249
+msgid "Base Theme"
+msgstr ""
+
+#: src/prefs.js:250
+msgid "Select the theme to use as foundation for overlay"
+msgstr ""
+
+#: src/prefs.js:409
+msgid "Overlay Status"
+msgstr ""
+
+#: src/prefs.js:410
+msgid "Checking..."
+msgstr ""
+
+#: src/prefs.js:421
+msgid "Inactive - Enable overlay to apply custom theme"
+msgstr ""
+
+#: src/prefs.js:435
+msgid "Auto-detect theme border radius"
+msgstr ""
+
+#: src/prefs.js:436
+msgid "Automatically detect and use border-radius from current theme"
+msgstr ""
+
+#: src/prefs.js:448 src/prefs.js:1216
+msgid "Automatic Color Extraction"
+msgstr ""
+
+#: src/prefs.js:453
+msgid "Auto-detect colors on wallpaper change"
+msgstr ""
+
+#: src/prefs.js:454
+msgid ""
+"Automatically extract and apply colors when you change your desktop "
+"background"
+msgstr ""
+
+#: src/prefs.js:466
+msgid "Extract Colors Now"
+msgstr ""
+
+#: src/prefs.js:467
+msgid "Manually trigger color extraction from current wallpaper"
+msgstr ""
+
+#: src/prefs.js:470
+msgid "Extract from Wallpaper"
+msgstr ""
+
+#: src/prefs.js:486
+msgid "Manual Controls"
+msgstr ""
+
+#: src/prefs.js:491
+msgid "Apply Changes Now"
+msgstr ""
+
+#: src/prefs.js:492
+msgid "Manually update overlay theme (auto-update has 2s delay)"
+msgstr ""
+
+#: src/prefs.js:496
+msgid "Apply"
+msgstr ""
+
+#: src/prefs.js:518
+msgid "Overlay Update Triggered"
+msgstr ""
+
+#: src/prefs.js:519
+msgid "The theme overlay has been updated with your current settings."
+msgstr ""
+
+#: src/prefs.js:531
+msgid "Recreate Overlay"
+msgstr ""
+
+#: src/prefs.js:532
+msgid "Delete and recreate entire overlay (useful if base theme changed)"
+msgstr ""
+
+#: src/prefs.js:536
+msgid "Recreate"
+msgstr ""
+
+#: src/prefs.js:554
+msgid "Overlay Recreation Triggered"
+msgstr ""
+
+#: src/prefs.js:555
+msgid ""
+"The theme overlay is being completely rebuilt from the selected base theme."
+msgstr ""
+
+#: src/prefs.js:571
+msgid "Color Settings"
+msgstr ""
+
+#: src/prefs.js:577
+msgid "Basic Transparency Controls"
+msgstr ""
+
+#: src/prefs.js:582
+msgid "Panel Opacity"
+msgstr ""
+
+#: src/prefs.js:583
+msgid "Adjust the transparency of the main panel (taskbar)"
+msgstr ""
+
+#: src/prefs.js:602
+msgid "Menu Opacity"
+msgstr ""
+
+#: src/prefs.js:603
+msgid "Adjust the transparency of popup menus"
+msgstr ""
+
+#: src/prefs.js:622
+msgid "Zorin Theme Tint Strength"
+msgstr ""
+
+#: src/prefs.js:623
+msgid ""
+"Control color tint intensity for Zorin themes (0% = neutral grey, 100% = "
+"original theme color). Only affects Zorin themes like ZorinBlue, ZorinGreen, "
+"etc."
+msgstr ""
+
+#: src/prefs.js:647
+msgid "Panel Appearance"
+msgstr ""
+
+#: src/prefs.js:652
+msgid "Enable bordered floating mode"
+msgstr ""
+
+#: src/prefs.js:653
+msgid "Enables bordered floating mode with intellihide activated"
+msgstr ""
+
+#: src/prefs.js:663
+msgid "Override panel color"
+msgstr ""
+
+#: src/prefs.js:664
+msgid "Use custom color for panel background instead of theme color"
+msgstr ""
+
+#: src/prefs.js:674
+msgid "Choose override panel color"
+msgstr ""
+
+#: src/prefs.js:675
+msgid "Select background color for panel when override is enabled"
+msgstr ""
+
+#: src/prefs.js:709
+msgid "Override popup color"
+msgstr ""
+
+#: src/prefs.js:710
+msgid "Use custom color for popup menu backgrounds"
+msgstr ""
+
+#: src/prefs.js:720
+msgid "Choose override popup color"
+msgstr ""
+
+#: src/prefs.js:721
+msgid "Select background color for popup menus when override is enabled"
+msgstr ""
+
+#: src/prefs.js:755
+msgid "Border Radius"
+msgstr ""
+
+#: src/prefs.js:756
+msgid "Rounded corners for panels and menus"
+msgstr ""
+
+#: src/prefs.js:777
+msgid "Blur Effects"
+msgstr ""
+
+#: src/prefs.js:783
+msgid "Custom Blur and Border Settings"
+msgstr ""
+
+#: src/prefs.js:788
+msgid "Blur radius"
+msgstr ""
+
+#: src/prefs.js:789
+msgid "Controls the intensity of the blur effect"
+msgstr ""
+
+#: src/prefs.js:806
+msgid "Saturation multiplier"
+msgstr ""
+
+#: src/prefs.js:807
+msgid "Adjusts color vibrancy in the blurred background"
+msgstr ""
+
+#: src/prefs.js:825
+msgid "Contrast multiplier"
+msgstr ""
+
+#: src/prefs.js:826
+msgid "Controls the difference between light and dark areas"
+msgstr ""
+
+#: src/prefs.js:844
+msgid "Brightness multiplier"
+msgstr ""
+
+#: src/prefs.js:845
+msgid "Modifies the overall lightness of the blurred layer"
+msgstr ""
+
+#: src/prefs.js:863
+msgid "Background color/tint"
+msgstr ""
+
+#: src/prefs.js:864
+msgid "Adds a tint overlay to the blur effect"
+msgstr ""
+
+#: src/prefs.js:898
+msgid "Border color"
+msgstr ""
+
+#: src/prefs.js:899
+msgid "Sets the color of the subtle border framing the blurred elements"
+msgstr ""
+
+#: src/prefs.js:933
+msgid "Border width"
+msgstr ""
+
+#: src/prefs.js:934
+msgid "Defines the thickness of the border around blurred elements"
+msgstr ""
+
+#: src/prefs.js:953
+msgid "Shadow Settings"
+msgstr ""
+
+#: src/prefs.js:958
+msgid "Shadow strength"
+msgstr ""
+
+#: src/prefs.js:959
+msgid ""
+"Controls outer glow spread around panels and menus (0.0 = no shadow, 0.8 = "
+"wide halo)"
+msgstr ""
+
+#: src/prefs.js:977
+msgid "Shadow color"
+msgstr ""
+
+#: src/prefs.js:978
+msgid ""
+"Sets the base color of shadows, automatically adjusted for light/dark themes"
+msgstr ""
+
+#: src/prefs.js:1014
+msgid "Blur opacity"
+msgstr ""
+
+#: src/prefs.js:1015
+msgid "Controls the transparency of the entire blur layer"
+msgstr ""
+
+#: src/prefs.js:1036
+msgid "Advanced Settings"
+msgstr ""
+
+#: src/prefs.js:1042
+msgid "Interface Behavior"
+msgstr ""
+
+#: src/prefs.js:1047
+msgid "Hide system tray indicator"
+msgstr ""
+
+#: src/prefs.js:1048
+msgid "Hide the transparency control icon from the system tray"
+msgstr ""
+
+#: src/prefs.js:1058
+msgid "Enable notifications"
+msgstr ""
+
+#: src/prefs.js:1059
+msgid ""
+"Show desktop notifications for theme changes, color extraction, and "
+"extension events"
+msgstr ""
+
+#: src/prefs.js:1069
+msgid "Enable Zorin OS Integration"
+msgstr ""
+
+#: src/prefs.js:1070
+msgid ""
+"Integrate with Zorin OS shell components for advanced control (transparency, "
+"intellihide). For Fluent GTK themes, adds Zorin-style CSS enhancements."
+msgstr ""
+
+#: src/prefs.js:1082
+msgid "Icon Theme Override"
+msgstr ""
+
+#: src/prefs.js:1083
+msgid ""
+"Enable manual selection of icon theme independently from GTK theme. Useful "
+"for themes without matching icon packs (e.g., Fluent GTK without Fluent "
+"icons)."
+msgstr ""
+
+#: src/prefs.js:1093
+msgid "Icon Theme"
+msgstr ""
+
+#: src/prefs.js:1094
+msgid ""
+"Select icon theme when manual override is enabled. Scanned from ~/.icons, ~/."
+"local/share/icons, and /usr/share/icons."
+msgstr ""
+
+#: src/prefs.js:1135
+msgid "Automation Features"
+msgstr ""
+
+#: src/prefs.js:1140
+msgid "Auto-switch between Light/Dark variants"
+msgstr ""
+
+#: src/prefs.js:1141
+msgid ""
+"Monitors Quick Settings Dark/Light toggle and automatically switches to "
+"matching theme variant (e.g., ZorinPurple-Light ↔ ZorinPurple-Dark). Also "
+"filters dropdown to show only matching themes."
+msgstr ""
+
+#: src/prefs.js:1153
+msgid "Full Auto Mode"
+msgstr ""
+
+#: src/prefs.js:1154
+msgid ""
+"Experimental: Wallpaper extraction controls ALL colors including blur "
+"effects (border, background, shadow). When disabled, theme controls blur "
+"effects while wallpaper controls panel/popup."
+msgstr ""
+
+#: src/prefs.js:1166
+msgid "Debugging"
+msgstr ""
+
+#: src/prefs.js:1171
+msgid "Enable debug logging"
+msgstr ""
+
+#: src/prefs.js:1172
+msgid "Enable detailed logging for troubleshooting extension issues"
+msgstr ""
+
+#: src/prefs.js:1185
+msgid "About"
+msgstr ""
+
+#: src/prefs.js:1190
+msgid "CSS Gnommé - Dynamic GTK Theme Overlay for Zorin OS"
+msgstr ""
+
+#: src/prefs.js:1195
+msgid "Version"
+msgstr ""
+
+#: src/prefs.js:1195
+msgid "Author"
+msgstr ""
+
+#: src/prefs.js:1196
+msgid ""
+"Developed for Zorin OS 17.3 (GNOME Shell 43-44), inspired by Cinnamon CSS "
+"Panels and gnome Open Bar extensions."
+msgstr ""
+
+#: src/prefs.js:1204
+msgid "How It Works"
+msgstr ""
+
+#: src/prefs.js:1209
+msgid "Overlay Theme System"
+msgstr ""
+
+#: src/prefs.js:1210
+msgid ""
+"Creates a dynamic overlay at ~/.themes/CSSGnomme/ that sits on top of your "
+"current theme via @import. Fully reversible, doesn't modify original theme "
+"files."
+msgstr ""
+
+#: src/prefs.js:1217
+msgid ""
+"Analyzes wallpaper using K-means clustering, extracts dominant and accent "
+"colors, applies darker variants to panels and brighter variants to menus. "
+"Triggers on wallpaper change or manually."
+msgstr ""
+
+#: src/prefs.js:1223
+msgid "Advanced Blur Effects"
+msgstr ""
+
+#: src/prefs.js:1224
+msgid ""
+"Uses CSS backdrop-filter for frosted glass appearance. All settings (radius, "
+"saturate, contrast, brightness) dynamically read from preferences. Applies "
+"to menus, Alt+Tab, and shell elements."
+msgstr ""
+
+#: src/prefs.js:1230
+msgid "Zorin OS Integration"
+msgstr ""
+
+#: src/prefs.js:1231
+msgid ""
+"Enhanced styling for Zorin Taskbar and panels. Note: Window Preview uses "
+"inline JavaScript styles that override CSS."
+msgstr ""
+
+#: src/prefs.js:1237
+msgid "What Gets Styled"
+msgstr ""
+
+#: src/prefs.js:1238
+msgid ""
+"GNOME Shell panel, Zorin taskbar, popup menus, Alt+Tab switcher, Quick "
+"Settings, notifications, OSD, and Dash. GTK3/GTK4 apps inherit base theme "
+"with optional overrides."
+msgstr ""
+
+#: src/prefs.js:1244
+msgid "Known Limitations"
+msgstr ""
+
+#: src/prefs.js:1245
+msgid ""
+"Theme switching: Flicker on theme refresh. Window Preview: Zorin Taskbar "
+"uses inline JavaScript styles that override CSS. Wayland: Shell restart "
+"requires logout. Performance: Heavy blur (radius > 40px) may impact older "
+"GPUs."
+msgstr ""
+
+#: src/prefs.js:1305
+msgid "Panel Transparency Settings"
+msgstr ""
+
+#: src/prefs.js:1314
+msgid "Panel Opacity:"
+msgstr ""
+
+#: src/prefs.js:1332
+msgid "Transparency"
+msgstr ""

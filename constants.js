@@ -270,13 +270,27 @@ var Constants = {
     // === SHADOW SPREAD SETTINGS ===
 
     /**
-     * Shadow spread multiplier for shadow-strength setting
-     * Maps shadow-strength (0.0-0.8) to blur radius in pixels
-     * Formula: spread = strength * multiplier
-     * Example: strength 0.3 → 12px, strength 0.5 → 20px, strength 0.8 → 32px
-     * This controls the outer glow/halo visibility around panels and menus
+     * Shadow spread multiplier for shadow-strength setting (v1.5.4 Dynamic Shadow Fix)
+     * Maps shadow-strength (0.0-1.0) to blur radius in pixels
+     * Formula: baseShadow = shadowStrength * multiplier
+     * Example: strength 0.4 → 12px, strength 0.6 → 18px, strength 1.0 → 30px
+     * Changed: 70→30 (expanded range 0.8→1.0), maintains 12px at default 0.4
+     * This controls the base shadow blur before ratio scaling
      */
-    SHADOW_SPREAD_MULTIPLIER: 70,
+    SHADOW_SPREAD_MULTIPLIER: 30,
+
+    /**
+     * Shadow blur ratios for visual hierarchy (v1.5.4 Dynamic Shadow Fix)
+     * Applied to baseShadow calculation for consistent scaling
+     * Panel: 1.0x (primary), Popup/Button: 0.67x (secondary), Inset: 1.25x (depth)
+     * Example at 0.4 strength: Panel 12px, Popup 8px, Button 8px, Inset 15px
+     */
+    SHADOW_BLUR_RATIOS: {
+        panel: 1.0,      // Primary element - full shadow
+        popup: 0.67,     // Secondary elements - reduced shadow
+        button: 0.67,    // Interactive elements - matches popup
+        inset: 1.25      // Inner glow - enhanced for depth
+    },
 
     // === COLOR FALLBACKS ===
 
@@ -357,11 +371,12 @@ var Constants = {
         stageColor: 'stage { color:'
     },
 
-    // === SHADOW BLUR VALUES ===
+    // === SHADOW BLUR VALUES (DEPRECATED - v1.5.4) ===
 
     /**
-     * Fixed shadow blur radius values (pixels)
-     * Hardcoded per commit 94bb07e for consistent depth perception
+     * Fixed shadow blur radius values (pixels) - DEPRECATED in v1.5.4
+     * Replaced by dynamic calculation: baseShadow * SHADOW_BLUR_RATIOS[element]
+     * Kept for reference and fallback compatibility
      * Panel: 12px - Subtle elevation for taskbar
      * Popup: 8px - Sharp depth, matches taskbar for visual consistency
      * Button: 8px - Button hover/active shadow

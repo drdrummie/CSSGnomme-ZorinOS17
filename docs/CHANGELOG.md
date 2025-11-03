@@ -6,22 +6,60 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [1.5] - 2025-10-25
+## [1.5.4] - 2025-11-03
 
 ### Added
 
+- **Dynamic Shadow-Strength**: Real-time shadow calculation with adjustable strength (0.0-1.0), 233% visual range
+- **Manual Icon Theme Override**: Independent icon theme selection with auto-detect fallback
+- **Improved Accent Detection**: Smart validation prevents white/grey/black colors as accents (ZorinGrey fix)
+- **Panel Color Intelligence**: 4-tier hierarchy (user override → theme panel → theme accent → system default)
+
+### Fixed
+
+- **ZorinGrey White Switch Bug**: Dual-mode themes no longer detect white as accent color
+- **Neutral Theme Fallbacks**: Proper grey fallback colors instead of red/purple artifacts
+- **Icon Theme Restoration**: Correctly restores actual icon theme (not GTK theme name)
+- **Fluent Theme Colors**: Panel shows proper theme accent when override disabled
+
+### Changed
+
+- **Advanced Settings UI**: Reorganized with Zorin Integration moved from Theme Overlay page
+- **Icon Theme Dropdown**: Consistent ComboRow design matching Base Theme selector
+- **Cleaner Preferences**: Removed verbose descriptions from automation features
+
+---
+
+## [1.5.3] - 2025-11-01
+
+### Fixed
+
+- **Theme Dropdown Restore Bug**: Changing theme in dropdown now correctly restores to new theme (not old one)
+- **Root Cause**: Stale `index.theme` metadata preserved from previous overlay
+- **Solution**: Delete overlay directory before recreate (v2.5.1 backport pattern)
+
+---
+
+## [1.5.0] - 2025-10-25
+
+### Added
+
+- **Zorin Tint Removal System**: Adjust tint strength (0-100%) for more neutral appearance
+- **Auto-update on Slider Change**: Tint adjustments apply instantly (2s debounce, no manual recreate)
+- **Base-theme Cache Optimization**: Persistent cache with tintStrength in key for instant adjustments
 - **Fluent GTK Theme Support**: Improved compatibility with Fluent GTK themes
-- **Quick Settings Gradient Fix**: Removed unwanted Zorin accent gradient on Fluent GTK themes buttons
+- **Quick Settings Gradient Fix**: Removed unwanted Zorin accent gradient on third-party Shell themes
 
 ### Changed
 
 - **95% performance improvement** for Shell theme reloads (154ms vs 3000ms+)
 - Preferences UI reorganized for better clarity
+- Main.loadTheme() API integration (official GNOME Shell pattern)
 
 ### Fixed
 
 - Zorin intellihide management (floating panel now works reliably)
-- Symlinking of gtk-3|4 assets
+- Symlinking of gtk-3|4 assets (checkbox/radio icons in Fluent themes)
 - Memory leak prevention for GNOME 43-44
 - Race conditions in overlay updates
 
@@ -142,22 +180,20 @@ All versions are backward compatible within the 1.x series. Settings are preserv
 
 ### Platform Support
 
-- **Supported**: GNOME Shell 43, 44 (Tested on Zorin OS 17.3 Core, should support Ubuntu 22.04+, Fedora 38)
-- **Not Supported**: GNOME 45+ (different API - see separate branch if available)
+- **Supported**: GNOME Shell 43, 44 (Tested on Zorin OS 17.3 Core)
+- **Not Supported**: GNOME 45+ (different API - see separate version)
 
 ---
 
 ## Known Issues Summary
 
-For detailed issues and workarounds, see [KNOWN_ISSUES.md](KNOWN_ISSUES.md).
+For detailed issues and workarounds, see [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md).
 
 **Critical:**
-
 - GNOME Shell 43.9 wallpaper memory leak (external bug, not fixable)
 - Dark/light theme toggle memory amplification (external bug)
 
 **Minor:**
-
 - GdkPixbuf minor memory residual (~0.1-0.2MB per wallpaper analysis)
 
 ---

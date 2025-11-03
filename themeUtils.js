@@ -459,6 +459,53 @@ var ThemeUtils = class ThemeUtils {
     }
 
     /**
+     * Validate if color is suitable for accent color usage
+     * Rejects grey/white/black colors, prefers saturated colors
+     * Backported from v2.5.3 for ZorinGrey white switch detection fix
+     * @param {number} r - Red channel (0-255)
+     * @param {number} g - Green channel (0-255)
+     * @param {number} b - Blue channel (0-255)
+     * @returns {Object} {isValid: boolean, reason: string}
+     */
+    static isValidAccent(r, g, b) {
+        // Convert to HSL for proper color analysis
+        const hsl = this.rgbToHsl(r, g, b);
+        const h = hsl[0]; // Hue (0-360)
+        const s = hsl[1]; // Saturation (0-100)
+        const l = hsl[2]; // Lightness (0-100)
+
+        // Rule 1: Reject colors with very low saturation (grey/white detection)
+        if (s < 15) {
+            return {
+                isValid: false,
+                reason: `Too desaturated (S:${s.toFixed(1)}% < 15%) - likely grey/white`
+            };
+        }
+
+        // Rule 2: Reject very dark colors (black detection)
+        if (l < 25) {
+            return {
+                isValid: false,
+                reason: `Too dark (L:${l.toFixed(1)}% < 25%) - likely black`
+            };
+        }
+
+        // Rule 3: Reject very light colors (white detection)
+        if (l > 90) {
+            return {
+                isValid: false,
+                reason: `Too light (L:${l.toFixed(1)}% > 90%) - likely white`
+            };
+        }
+
+        // Valid accent color
+        return {
+            isValid: true,
+            reason: `Valid accent (H:${h.toFixed(0)}° S:${s.toFixed(1)}% L:${l.toFixed(1)}%)`
+        };
+    }
+
+    /**
      * Enhance pastel colors for dark themes
      * Increases saturation and reduces lightness to make colors more vibrant
      * @param {Array} rgb - [r, g, b] array
@@ -498,5 +545,214 @@ var ThemeUtils = class ThemeUtils {
         }
 
         return palette;
+    }
+
+    // ===== TINT DETECTION & NEUTRALIZATION (v1.5.1 - backport from v2.5.1) =====
+
+    /**
+     * Detect tinted background from RGB values
+     * Returns which channel is dominant (r/g/b) and tint strength
+     * @param {number|Array} r - Red (0-255) or [r,g,b] array
+     * @param {number} g - Green (0-255)
+     * @param {number} b - Blue (0-255)
+     * @param {number} threshold - Min difference to consider dominant (default: 5)
+     * @returns {Object} {isTinted, channel, strength, rgb, description}
+     */
+    static detectBackgroundTint(r, g, b, threshold = 5) {
+        // Handle array input
+        if(Array.isArray(r)) {
+            [r, g, b] = r.map(c => parseInt(c));
+        } else {
+            r = parseInt(r);
+            g = parseInt(g);
+            b = parseInt(b);
+        }
+
+        // Check if R=G=B (neutral grey) within threshold
+        const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+
+        if(maxDiff <= threshold) {
+            return {
+                isTinted: false,
+                channel: "NONE",
+                strength: 0,
+                rgb: [r, g, b],
+                description: "Neutral grey background"
+            };
+        }
+
+        // Determine dominant channel and tint type
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const strength = Math.round(((max - min) / 255) * 100);
+
+        let channel = "UNKNOWN";
+        let colorName = "Unknown";
+
+        // Determine tint color based on channel relationships
+        if(r === max && g === max) {
+            channel = "RG";
+            colorName = "Yellow";
+        } else if(r === max && b === max) {
+            channel = "RB";
+            colorName = "Magenta";
+        } else if(g === max && b === max) {
+            channel = "GB";
+            colorName = "Cyan";
+        } else if(r === max && g > b) {
+            channel = "R";
+            colorName = g > r - (r - b) / 2 ? "Orange" : "Red";
+        } else if(r === max) {
+            channel = "R";
+            colorName = "Purple-Red";
+        } else if(g === max && b > r) {
+            channel = "G";
+            colorName = b > g - (g - r) / 2 ? "Teal" : "Green";
+        } else if(g === max) {
+            channel = "G";
+            colorName = "Yellow-Green";
+        } else if(b === max && r > g) {
+            channel = "B";
+            colorName = r > b - (b - g) / 2 ? "Purple" : "Blue";
+        } else if(b === max) {
+            channel = "B";
+            colorName = "Cyan-Blue";
+        }
+
+        return {
+            isTinted: true,
+            channel,
+            colorName,
+            strength,
+            rgb: [r, g, b],
+            description: `${colorName} tint (${strength}% strength, max diff: ${maxDiff})`
+        };
+    }
+
+    /**
+     * Neutralize tinted background to pure grey
+     * Preserves perceived brightness (HSP formula)
+     * @param {number|Array} r - Red (0-255) or [r,g,b] array
+     * @param {number} g - Green (0-255)
+     * @param {number} b - Blue (0-255)
+     * @returns {Array} [r, g, b] neutralized grey
+     */
+    static neutralizeTint(r, g, b) {
+        // Handle array input
+        if(Array.isArray(r)) {
+            [r, g, b] = r.map(c => parseInt(c));
+        } else {
+            r = parseInt(r);
+            g = parseInt(g);
+            b = parseInt(b);
+        }
+
+        // Use perceived brightness (HSP) to maintain luminance
+        // This ensures neutralized color has same brightness as original
+        const hsp = this.getHSP(r, g, b);
+        const neutral = Math.round(hsp);
+
+        // Clamp to valid range
+        const clampedNeutral = Math.max(0, Math.min(255, neutral));
+
+        return [clampedNeutral, clampedNeutral, clampedNeutral];
+    }
+
+    /**
+     * Blend color towards neutral grey by percentage
+     * Useful for reducing tint strength without complete removal
+     * @param {number|Array} r - Red (0-255) or [r,g,b] array
+     * @param {number} g - Green (0-255)
+     * @param {number} b - Blue (0-255)
+     * @param {number} blendPercent - Blend percentage (0-100, where 100 = fully neutral)
+     * @returns {Array} [r, g, b] blended color
+     */
+    static blendToNeutral(r, g, b, blendPercent) {
+        // Handle array input
+        if(Array.isArray(r)) {
+            [r, g, b] = r.map(c => parseInt(c));
+            blendPercent = g; // Second parameter becomes blend percent
+        } else {
+            r = parseInt(r);
+            g = parseInt(g);
+            b = parseInt(b);
+        }
+
+        // Clamp blend percentage
+        blendPercent = Math.max(0, Math.min(100, blendPercent));
+
+        // Get neutral target
+        const [neutralR, neutralG, neutralB] = this.neutralizeTint(r, g, b);
+
+        // Blend factor (0.0 = original, 1.0 = fully neutral)
+        const factor = blendPercent / 100;
+
+        // Linear interpolation between original and neutral
+        const blendedR = Math.round(r + (neutralR - r) * factor);
+        const blendedG = Math.round(g + (neutralG - g) * factor);
+        const blendedB = Math.round(b + (neutralB - b) * factor);
+
+        return [blendedR, blendedG, blendedB];
+    }
+
+    /**
+     * Parse GTK @define-color tint colors (FOREGROUND + BACKGROUND)
+     * Detects theme_fg_color, theme_bg_color, and theme_base_color
+     * @param {string} css - CSS content to parse
+     * @param {boolean} isZorinTheme - Whether theme is Zorin variant
+     * @returns {Object} {fgHex, fgRgb, bgHex, bgRgb, baseHex, baseRgb}
+     */
+    static detectGtkTintColors(css, isZorinTheme) {
+        if(!isZorinTheme) {
+            return {
+                fgHex: null,
+                fgRgb: null,
+                bgHex: null,
+                bgRgb: null,
+                baseHex: null,
+                baseRgb: null
+            };
+        }
+
+        let result = {
+            fgHex: null,
+            fgRgb: null,
+            bgHex: null,
+            bgRgb: null,
+            baseHex: null,
+            baseRgb: null
+        };
+
+        // Parse @define-color theme_fg_color (foreground)
+        const fgMatch = css.match(/@define-color\s+theme_fg_color\s+(#[0-9a-fA-F]{6})/);
+        if(fgMatch) {
+            result.fgHex = fgMatch[1].toLowerCase();
+            const r = parseInt(result.fgHex.slice(1, 3), 16);
+            const g = parseInt(result.fgHex.slice(3, 5), 16);
+            const b = parseInt(result.fgHex.slice(5, 7), 16);
+            result.fgRgb = [r, g, b];
+        }
+
+        // Parse @define-color theme_bg_color (background)
+        const bgMatch = css.match(/@define-color\s+theme_bg_color\s+(#[0-9a-fA-F]{6})/);
+        if(bgMatch) {
+            result.bgHex = bgMatch[1].toLowerCase();
+            const r = parseInt(result.bgHex.slice(1, 3), 16);
+            const g = parseInt(result.bgHex.slice(3, 5), 16);
+            const b = parseInt(result.bgHex.slice(5, 7), 16);
+            result.bgRgb = [r, g, b];
+        }
+
+        // Parse @define-color theme_base_color (base background)
+        const baseMatch = css.match(/@define-color\s+theme_base_color\s+(#[0-9a-fA-F]{6})/);
+        if(baseMatch) {
+            result.baseHex = baseMatch[1].toLowerCase();
+            const r = parseInt(result.baseHex.slice(1, 3), 16);
+            const g = parseInt(result.baseHex.slice(3, 5), 16);
+            const b = parseInt(result.baseHex.slice(5, 7), 16);
+            result.baseRgb = [r, g, b];
+        }
+
+        return result;
     }
 };

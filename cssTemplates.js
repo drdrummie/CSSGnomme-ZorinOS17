@@ -1261,7 +1261,9 @@ headerbar .subtitle {
         enableZorinIntegration
     ) {
         const importNote = baseThemeExists
-            ? 'Modified base theme (tint removed)'
+            ? (importSource.includes('base-theme')
+                ? 'Modified base theme (Zorin tint removed/reduced)'
+                : 'Original theme')
             : 'Original theme (base-theme not found, using fallback)';
 
         return `/*
@@ -1271,7 +1273,7 @@ headerbar .subtitle {
  * GTK Version: ${version}
  */
 
-/* Import ${baseThemeExists ? 'modified base theme (tint removed)' : 'original theme (fallback)'} */
+/* Import ${baseThemeExists ? (importSource.includes('base-theme') ? 'modified base theme (Zorin tint removed/reduced)' : 'original theme') : 'original theme (fallback)'} */
 @import url("${importSource}");
 
 ${this.getGtkCssVariables(colorSettings)}

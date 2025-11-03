@@ -9,71 +9,65 @@
 ## ✨ Features
 
 ### 🔄 **Dynamic Theme Overlay System**
-
-- **Non-Destructive**: Creates a custom theme overlay that inherits from your current GTK theme
-- **Live Updates**: Automatically updates CSS when settings change
-- **One-Click Toggle**: Enable/disable the overlay system without losing your configuration
+- **Non-Destructive**: Creates a custom theme overlay in `~/.themes/CSSGnomme/` that inherits from your current GTK theme
+- **Live Updates**: Auto-updates CSS when settings change (2-second debounce for smooth transitions)
+- **One-Click Toggle**: Enable/disable overlay system without losing your configuration
 - **Theme Preservation**: Automatically restores your original theme when disabling the overlay
 
-### 🎨 **Automatic Wallpaper Color Extraction**
+### 🎨 **Automatic Color Extraction**
+- **Wallpaper Analysis**: Automatically extracts dominant and accent colors from your desktop background using K-means clustering
+- **Smart Application**: Applies extracted colors to panel backgrounds, popup menus, and accent borders
+- **Manual Trigger**: Extract colors on-demand with one click from the system tray menu
 
-- **Smart Analysis**: Automatically extracts dominant and accent colors from your desktop background using advanced K-means clustering algorithm
-- **Intelligent Application**: Applies extracted colors to panel backgrounds, popup menus, and accent borders
-- **Light/Dark Detection**: Automatically adjusts color intensity based on your theme brightness
-- **Manual Control**: Extract colors on-demand with one click from the system tray menu
 
 ### 🌫️ **Advanced Blur Effects**
-
-- **Full Backdrop Control**: Adjust blur radius (1-50px), saturation, contrast, and brightness independently
-- **Custom Tinting**: Apply semi-transparent color overlays for unique glass effects
+- **Full Backdrop Filter Control**: Adjust blur radius (1-50px), saturation (0.4-2.0), contrast (0.4-2.0), and brightness (0.4-2.0)
 - **Border Customization**: Define border color, width (0-5px), and opacity for framed appearance
+- **Dynamic Shadows**: Real-time shadow calculation with adjustable strength (0.0-1.0)
 - **Universal Application**: Blur effects apply to popup menus, Alt+Tab switcher, and other shell elements
 
 ### 🖥️ **Zorin OS Integration**
-
 - **Taskbar Enhancement**: Special integration with Zorin Taskbar for consistent styling
-- **Floating Panel Effect**: Automatically enables floating panel effect when border-radius is applied
-- **Tint Control**: Reduces Zorin theme color tint intensity for cleaner appearance
+- **Floating Panel Effect**: Automatically enables Zorin intellihide for floating panel when border-radius is applied
+- **Tint Control**: Adjust Zorin theme color tint intensity (0-100%) for more neutral or vibrant appearance
 - **Shell Component Styling**: Enhanced visual consistency across panels, menus, and system UI
 
 ### 🎛️ **Customizable Transparency**
-
-- **Panel Opacity**: Control main taskbar/panel transparency (10-100%)
-- **Menu Opacity**: Separate opacity control for popup menus (10-100%)
-- **Color Overrides**: Manually set panel and popup background colors with full RGBA support
+- **Panel Opacity**: Control main taskbar/panel transparency (0-100%)
+- **Menu Opacity**: Separate opacity control for popup menus (0-100%)
+- **Color Overrides**: Manually set panel and popup background colors with RGBA support
 - **Border Radius**: Auto-detect or manually set rounded corners (0-25px)
+
+### 🎨 **Advanced Features (v1.5.4)**
+- **Manual Icon Theme Override**: Independent icon selection with auto-detect fallback
 
 ---
 
 ## 🖼️ Screenshots
 
 **Additional Screenshots:**
-
 - [Border Effects (menu)](docs/screenshot-border-menu.png)
 - [Quick Settings](docs/screenshot-border-quicksettings.png)
 - [More examples in docs/](docs/)
 
 ---
 
-## � Requirements
+## 📦 Requirements
 
 **Supported GNOME Shell Versions:**
-
 - GNOME 43 (Zorin OS 17.3)
 - GNOME 44
 
 **Tested On:**
-
 - Zorin OS 17.3 Core (Primary target)
 
 **Not Compatible With:**
-
 - GNOME 45+ (breaking API changes - see ZorinOS 18 version)
 - GNOME 42 and earlier (missing required APIs)
 
 ---
 
-## �📥 Installation
+## 📥 Installation
 
 ### Option 1: GNOME Extensions Website (Recommended)
 
@@ -114,46 +108,61 @@ Then restart GNOME Shell and enable the extension.
 
 ## 🚀 Quick Start
 
-### Getting Started
+### First-Time Setup (5 minutes)
 
-1. **Enable the Extension**: Use GNOME Extensions app or the system tray icon
-2. **Open Preferences**: Click the system tray icon → "Open Settings"
-3. **Choose Base Theme**: Select your preferred GTK theme from the dropdown
-4. **Enable Overlay**: Toggle "Enable Overlay Theme" to activate
-5. **Customize**: Adjust transparency, blur effects, and colors to your liking
-6. **Disable notifications**: If too distracting for your taste
+1. **Enable the Extension**:
+   - Open Extensions app → Enable "CSS Gnommé"
+   - Click the settings gear icon
 
-### Quick Actions (System Tray Menu)
+2. **Activate Overlay System**:
+   - Go to "Theme Overlay" tab
+   - Select your preferred "Base Theme"
+   - Toggle "Enable Overlay Theme" → ON
 
-- **Extract Colors from Wallpaper**: One-click color extraction
-- **Enable/Disable Overlay**: Quick toggle without opening preferences
-- **Open Settings**: Open full settings dialog
+3. **Extract Colors from Wallpaper**:
+   - Toggle "Auto-detect colors on wallpaper change" → ON
+   - Click "Extract Colors Now" to see immediate results
 
-For detailed setup instructions, see [Quick Guide](docs/QUICK_GUIDE_ZOS17.md).
+4. **Fine-tune Transparency**:
+   - Go to "Color Settings" tab
+   - Adjust "Panel Opacity" (try 70% for glass effect)
+   - Adjust "Menu Opacity" (try 80% for readability)
+
+5. **Add Blur Effects** (Optional):
+   - Go to "Blur Effects" tab
+   - Set "Blur radius" to 25px
+   - Adjust saturation/contrast to taste
+
+---
+
+## ⚙️ Configuration
+
+Access settings through:
+- **System Tray Icon**: Click the theme icon → "Open Settings"
+- **Extensions App**: Find "CSS Gnommé" → Settings button
+- **Quick Menu**: System tray icon provides quick actions for color extraction and overlay toggling
+
+---
 
 ## 🔧 Troubleshooting
 
 **Extension not appearing after install:**
-
 - Restart GNOME Shell (Alt+F2 → 'r' on X11, or logout/login on Wayland)
 - Check if enabled: `gnome-extensions list --enabled | grep cssgnomme`
 
 **Colors not extracting:**
-
 - Ensure wallpaper is set (not solid color background)
 - Try manual extraction via extension menu
 - Check logs: `journalctl -f -o cat /usr/bin/gnome-shell | grep CSSGnomme`
 
 **Zorin integration not working:**
-
 - Ensure Zorin Taskbar extension is enabled
 - Restart GNOME Shell after enabling both extensions
 
 **Performance issues:**
-
 - Reduce blur radius (lower values = better performance)
 - Disable "Auto-extract on wallpaper change" if not needed
-- Restart GNOME Shell periodically on GNOME 43 due to memory leaks
+- Restart GNOME Shell periodically on GNOME 43 due to platform memory leaks
 
 **Advanced Troubleshooting:**
 
@@ -172,43 +181,23 @@ gnome-extensions list --enabled
 
 ## ⚠️ Known Limitations
 
-- **GNOME 43 Memory Leaks**: Wallpaper changes cause memory leaks (external GNOME Shell bug)
-- **Theme Compatibility**: Overlay theme inherits from current GTK theme (some themes may have compatibility issues)
-- **Color Extraction**: Requires valid image wallpaper (not solid colors or gradients)
-- **Performance**: Complex blur effects may impact performance on older hardware
 
-See [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for detailed list of limitations and workarounds.
-See [CHANGELOG.md](docs/CHANGELOG.md) for version history and detailed release notes.
-
-**Quick Summary:**
-
-- **Wallpaper Memory Leak**: GNOME Shell 43.9 has a memory leak with wallpaper changes (external bug). Avoid frequent wallpaper switching.
-- **Dark/Light Toggle Performance**: Multiple theme toggles can impact performance. Restart GNOME Shell if needed.
-- **GdkPixbuf Memory**: Minor memory residual after color extraction (~0.1-0.2MB per wallpaper).
-- **Could affect apps too but it can be adjusted (i.e. remove transparency and / or choose wanted color manually)**
+**See:** [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for complete technical analysis
 
 ---
 
 ## 💡 Tips & Tricks
 
 **Best Performance:**
-
 - Disable auto-color extraction if you don't change wallpapers often
-- Set your desired "style"
 - Use moderate blur radius (10-20px) for best balance
+- Restart GNOME Shell weekly to clear accumulated memory
 
 **Visual Consistency:**
-
 - Match border-radius across all elements for cohesive look
 - Use extracted colors for best integration with wallpaper
 - Adjust saturation for more vibrant or muted appearance
 
-**Troubleshooting:**
-
-- If you encounter hangs, system is probably low on memory (i.e. lot of wallpaper changes + dark | light theme switching)
-- If UI doesn't update: Restart GNOME Shell (`Alt+F2` → `r` on X11)
-- If colors look wrong: Re-extract from wallpaper
-- If performance issues: Reduce blur radius or disable blur
 
 ---
 

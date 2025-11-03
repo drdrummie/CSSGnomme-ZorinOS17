@@ -119,6 +119,83 @@ function _discoverInstalledThemes() {
     return themeArray;
 }
 
+/**
+ * Discover installed Icon themes from standard locations (v1.5.4)
+ * @returns {string[]} Array of icon theme names
+ */
+function _discoverInstalledIconThemes() {
+    const GLib = imports.gi.GLib;
+    const iconThemes = new Set();
+
+    // Standard icon theme locations
+    const iconDirs = [
+        GLib.get_home_dir() + '/.icons',
+        GLib.get_home_dir() + '/.local/share/icons',
+        '/usr/share/icons'
+    ];
+
+    iconDirs.forEach(dir => {
+        try {
+            const dirFile = Gio.File.new_for_path(dir);
+            if (!dirFile.query_exists(null)) {
+                return;
+            }
+
+            const enumerator = dirFile.enumerate_children(
+                'standard::name,standard::type',
+                Gio.FileQueryInfoFlags.NONE,
+                null
+            );
+
+            let info;
+            while ((info = enumerator.next_file(null)) !== null) {
+                if (info.get_file_type() === Gio.FileType.DIRECTORY) {
+                    const iconThemeName = info.get_name();
+
+                    // Skip hidden directories and cursor themes
+                    if (iconThemeName.startsWith('.') || iconThemeName.toLowerCase().includes('cursor')) {
+                        continue;
+                    }
+
+                    // Check if icon theme has valid index.theme file
+                    const iconThemePath = dir + '/' + iconThemeName;
+                    const indexThemePath = iconThemePath + '/index.theme';
+
+                    if (GLib.file_test(indexThemePath, GLib.FileTest.EXISTS)) {
+                        try {
+                            // Validate that it's actually an icon theme (contains [Icon Theme] section)
+                            const [success, contents] = GLib.file_get_contents(indexThemePath);
+                            if (success) {
+                                const indexContent = new TextDecoder().decode(contents);
+                                if (indexContent.includes('[Icon Theme]')) {
+                                    iconThemes.add(iconThemeName);
+                                }
+                            }
+                        } catch (e) {
+                            // Invalid index.theme file, skip
+                        }
+                    }
+                }
+            }
+            enumerator.close(null);
+        } catch (e) {
+            log(`Error scanning icon directory ${dir}: ${e.message}`);
+        }
+    });
+
+    // Convert Set to sorted Array
+    const iconThemeArray = Array.from(iconThemes).sort();
+
+    // Ensure Adwaita is first if it exists
+    const adwaitaIndex = iconThemeArray.indexOf('Adwaita');
+    if (adwaitaIndex > 0) {
+        iconThemeArray.splice(adwaitaIndex, 1);
+        iconThemeArray.unshift('Adwaita');
+    }
+
+    return iconThemeArray;
+}
+
 function fillPreferencesWindow(window) {
     // For GNOME 43+ with Adwaita
     if (Adw) {
@@ -353,19 +430,6 @@ function fillAdwPreferencesWindow(window) {
 
     themeIntegrationGroup.add(statusRow);
 
-    // Zorin OS Integration switch
-    const zorinIntegrationRow = new Adw.ActionRow({
-        title: _('Enable Zorin OS Integration'),
-        subtitle: _('Integrate with Zorin OS shell components for advanced control (transparency, intellihide). For Fluent GTK themes, adds Zorin-style CSS enhancements.')
-    });
-    const zorinIntegrationSwitch = new Gtk.Switch({
-        valign: Gtk.Align.CENTER
-    });
-    settings.bind('enable-zorin-integration', zorinIntegrationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
-    zorinIntegrationRow.add_suffix(zorinIntegrationSwitch);
-    zorinIntegrationRow.activatable_widget = zorinIntegrationSwitch;
-    themeIntegrationGroup.add(zorinIntegrationRow);
-
     // Auto-detect radius (moved from Colors Settings page for better organization)
     const autoDetectRadiusRow = new Adw.ActionRow({
         title: _('Auto-detect theme border radius'),
@@ -521,9 +585,9 @@ function fillAdwPreferencesWindow(window) {
 
     const panelOpacitySpinButton = new Gtk.SpinButton({
         adjustment: new Gtk.Adjustment({
-            lower: 0.1,
+            lower: 0.0,
             upper: 1.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -541,9 +605,9 @@ function fillAdwPreferencesWindow(window) {
 
     const menuOpacitySpinButton = new Gtk.SpinButton({
         adjustment: new Gtk.Adjustment({
-            lower: 0.1,
+            lower: 0.0,
             upper: 1.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -552,6 +616,29 @@ function fillAdwPreferencesWindow(window) {
     settings.bind('menu-opacity', menuOpacitySpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
     menuOpacityRow.add_suffix(menuOpacitySpinButton);
     basicTransparencyGroup.add(menuOpacityRow);
+
+    // Zorin Theme Tint Strength Control (v1.5 backport from v2.5.1)
+    const tintStrengthRow = new Adw.ActionRow({
+        title: _('Zorin Theme Tint Strength (%)'),
+        subtitle: _('Control color tint intensity for Zorin themes (0% = neutral grey, 100% = original theme color). Only affects Zorin themes like ZorinBlue, ZorinGreen, etc.')
+    });
+
+    const tintStrengthSpinButton = new Gtk.SpinButton({
+        adjustment: new Gtk.Adjustment({
+            lower: 0,
+            upper: 100,
+            step_increment: 5,
+            page_increment: 10,
+        }),
+        digits: 0,  // Integer control (no decimals)
+        valign: Gtk.Align.CENTER
+    });
+
+    // Bind to existing GSettings key (already exists in v1.5 schema!)
+    settings.bind('zorin-tint-strength', tintStrengthSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
+
+    tintStrengthRow.add_suffix(tintStrengthSpinButton);
+    basicTransparencyGroup.add(tintStrengthRow);
 
     transparencyPage.add(basicTransparencyGroup);
 
@@ -723,7 +810,7 @@ function fillAdwPreferencesWindow(window) {
         adjustment: new Gtk.Adjustment({
             lower: 0.4,
             upper: 2.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -742,7 +829,7 @@ function fillAdwPreferencesWindow(window) {
         adjustment: new Gtk.Adjustment({
             lower: 0.4,
             upper: 2.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -761,7 +848,7 @@ function fillAdwPreferencesWindow(window) {
         adjustment: new Gtk.Adjustment({
             lower: 0.4,
             upper: 2.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -875,7 +962,7 @@ function fillAdwPreferencesWindow(window) {
         adjustment: new Gtk.Adjustment({
             lower: 0.0,
             upper: 0.8,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -929,9 +1016,9 @@ function fillAdwPreferencesWindow(window) {
     });
     const blurOpacitySpinButton = new Gtk.SpinButton({
         adjustment: new Gtk.Adjustment({
-            lower: 0.1,
+            lower: 0.0,
             upper: 1.0,
-            step_increment: 0.05,
+            step_increment: 0.01,
             page_increment: 0.1
         }),
         digits: 2,
@@ -977,6 +1064,70 @@ function fillAdwPreferencesWindow(window) {
     notificationsRow.set_activatable_widget(notificationsSwitch);
     indicatorGroup.add(notificationsRow);
 
+    // Zorin OS Integration switch (moved from Theme Overlay page)
+    const zorinIntegrationRow = new Adw.ActionRow({
+        title: _('Enable Zorin OS Integration'),
+        subtitle: _('Integrate with Zorin OS shell components for advanced control (transparency, intellihide). For Fluent GTK themes, adds Zorin-style CSS enhancements.')
+    });
+    const zorinIntegrationSwitch = new Gtk.Switch({
+        valign: Gtk.Align.CENTER
+    });
+    settings.bind('enable-zorin-integration', zorinIntegrationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+    zorinIntegrationRow.add_suffix(zorinIntegrationSwitch);
+    zorinIntegrationRow.activatable_widget = zorinIntegrationSwitch;
+    indicatorGroup.add(zorinIntegrationRow);
+
+    // Manual Icon Theme Override (v1.5.4)
+    const manualIconOverrideRow = new Adw.ActionRow({
+        title: _('Icon Theme Override'),
+        subtitle: _('Enable manual selection of icon theme independently from GTK theme. Useful for themes without matching icon packs (e.g., Fluent GTK without Fluent icons).')
+    });
+    const manualIconOverrideSwitch = new Gtk.Switch({ valign: Gtk.Align.CENTER });
+    settings.bind('manual-icon-theme-override', manualIconOverrideSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+    manualIconOverrideRow.add_suffix(manualIconOverrideSwitch);
+    manualIconOverrideRow.set_activatable_widget(manualIconOverrideSwitch);
+    indicatorGroup.add(manualIconOverrideRow);
+
+    // Icon Theme Selection (v1.5.4)
+    const iconThemeSelectionRow = new Adw.ComboRow({
+        title: _('Icon Theme'),
+        subtitle: _('Select icon theme when manual override is enabled. Scanned from ~/.icons, ~/.local/share/icons, and /usr/share/icons.')
+    });
+
+    // Create icon theme dropdown using ComboRow for consistency
+    const iconThemes = this._discoverInstalledIconThemes();
+    const iconThemeStringList = new Gtk.StringList();
+    iconThemes.forEach(theme => iconThemeStringList.append(theme));
+    iconThemeSelectionRow.set_model(iconThemeStringList);
+
+    // Set initial selection
+    const currentIconTheme = settings.get_string('selected-icon-theme');
+    const iconThemeIndex = iconThemes.indexOf(currentIconTheme);
+    if (iconThemeIndex >= 0) {
+        iconThemeSelectionRow.set_selected(iconThemeIndex);
+    }
+
+    // Connect dropdown selection changes
+    iconThemeSelectionRow.connect('notify::selected', () => {
+        const selectedIndex = iconThemeSelectionRow.get_selected();
+        const model = iconThemeSelectionRow.get_model();
+        const selectedTheme = model.get_string(selectedIndex);
+        if (selectedTheme) {
+            settings.set_string('selected-icon-theme', selectedTheme);
+        }
+    });
+
+    // Enable/disable dropdown based on manual override setting
+    const updateIconThemeDropdownSensitivity = () => {
+        iconThemeSelectionRow.set_sensitive(settings.get_boolean('manual-icon-theme-override'));
+    };
+    updateIconThemeDropdownSensitivity();
+
+    // Connect manual override changes to dropdown sensitivity
+    settings.connect('changed::manual-icon-theme-override', updateIconThemeDropdownSensitivity);
+
+    indicatorGroup.add(iconThemeSelectionRow);
+
     advancedPage.add(indicatorGroup);
 
     // Automation Features Group (consolidated theme switching + color extraction)
@@ -997,14 +1148,6 @@ function fillAdwPreferencesWindow(window) {
     autoSwitchColorSchemeRow.activatable_widget = autoSwitchColorSchemeSwitch;
     automationGroup.add(autoSwitchColorSchemeRow);
 
-    // Info label for auto-switch behavior
-    const filterInfoRow = new Adw.ActionRow({
-        title: 'ℹ️ ' + _('How It Works'),
-        subtitle: _('When enabled: Quick Settings toggle automatically switches your theme between -Dark and -Light variants. Dropdown shows only themes matching current appearance. When disabled: Manual theme selection, all themes shown.')
-    });
-    filterInfoRow.set_sensitive(false); // Non-interactive info label
-    automationGroup.add(filterInfoRow);
-
     // Full Auto Mode switch
     const fullAutoModeRow = new Adw.ActionRow({
         title: _('Full Auto Mode'),
@@ -1015,13 +1158,6 @@ function fillAdwPreferencesWindow(window) {
     fullAutoModeRow.add_suffix(fullAutoModeSwitch);
     fullAutoModeRow.set_activatable_widget(fullAutoModeSwitch);
     automationGroup.add(fullAutoModeRow);
-
-    // Info label explaining modes
-    const modeInfoRow = new Adw.ActionRow({
-        title: 'ℹ️ ' + _('Standard: Theme accent + Wallpaper backgrounds | Full Auto: Wallpaper controls everything')
-    });
-    modeInfoRow.set_sensitive(false); // Non-interactive info label
-    automationGroup.add(modeInfoRow);
 
     advancedPage.add(automationGroup);
 
@@ -1056,7 +1192,7 @@ function fillAdwPreferencesWindow(window) {
 
     // Combined version and author info
     const infoRow = new Adw.ActionRow({
-        title: _('Version') + ': 1.5 | ' + _('Author') + ': drdrummie',
+        title: _('Version') + ': 1.5.4 | ' + _('Author') + ': drdrummie',
         subtitle: _('Developed for Zorin OS 17.3 (GNOME Shell 43-44), inspired by Cinnamon CSS Panels and gnome Open Bar extensions.')
     });
     aboutGroup.add(infoRow);

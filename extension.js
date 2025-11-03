@@ -36,6 +36,10 @@ const CSSGnomeExtension = GObject.registerClass(
             // Timer for debouncing user settings updates (prevents UI freezes)
             this._userSettingsUpdateTimer = null;
 
+            // Promise tracking for overlay recreation (prevents concurrent operations)
+            this._overlayRecreationInProgress = false;
+            this._overlayRecreationPromise = null;
+
             // Initialize logger (no settings yet, will be set after defaults)
             this._logger = new Logger("Extension", null);
 
@@ -194,7 +198,7 @@ const CSSGnomeExtension = GObject.registerClass(
                 this._settings.set_string("blur-background", "rgba(0, 0, 0, 0.3)");
                 this._settings.set_string("blur-border-color", "rgba(255, 255, 255, 0.15)");
                 this._settings.set_int("blur-border-width", 1);
-                this._settings.set_double("shadow-strength", 0.3);
+                this._settings.set_double("shadow-strength", 0.4); // v1.5.4: Dynamic shadow fix - default 0.4
                 this._settings.set_double("blur-opacity", 0.8);
 
                 // Extended UI styling settings
@@ -208,6 +212,10 @@ const CSSGnomeExtension = GObject.registerClass(
 
                 // Auto color-scheme switching
                 this._settings.set_boolean("auto-switch-color-scheme", true);
+
+                // Icon Theme Override settings (v1.5.4)
+                this._settings.set_boolean("manual-icon-theme-override", false);
+                this._settings.set_string("selected-icon-theme", "Adwaita");
 
                 // Mark as initialized to prevent overwriting user settings on subsequent runs
                 this._settings.set_boolean("initialized", true);
@@ -238,7 +246,8 @@ const CSSGnomeExtension = GObject.registerClass(
                 "override-panel-color",
                 "choose-override-panel-color",
                 "override-popup-color",
-                "choose-override-popup-color"
+                "choose-override-popup-color",
+                "zorin-tint-strength"  // Zorin theme tint control (v1.5 backport from v2.5.1)
             ];
 
             // Connect CSS-affecting settings with generic handler
@@ -500,12 +509,10 @@ const CSSGnomeExtension = GObject.registerClass(
                             // Switch to matching variant (triggers overlay recreation via callback)
                             this._settings.set_string('overlay-source-theme', matchingVariant);
 
-                            // Wait for overlay recreation to complete (give it time to process)
-                            // The overlay-source-theme callback will trigger _recreateOverlayTheme
-                            await new Promise(resolve => GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
-                                resolve();
-                                return GLib.SOURCE_REMOVE;
-                            }));
+                            // Wait for overlay recreation to ACTUALLY complete (via Promise)
+                            // No more fixed 500ms delay - waits exactly as long as needed!
+                            await this._overlayRecreationPromise;
+                            this._logger.debug('Overlay recreation completed, proceeding with color extraction');
 
                         } finally {
                             // RESTORE auto-extraction after theme switch completes
@@ -624,8 +631,9 @@ const CSSGnomeExtension = GObject.registerClass(
             this._isEnabled = false;
             this._logger.always("Disabling extension...");
 
-            // Clear recreation guard on disable
+            // Clear recreation guard and Promise on disable
             this._overlayRecreationInProgress = false;
+            this._overlayRecreationPromise = null;
 
             // NEW: Restore Shell theme BEFORE cleanup if overlay is active
             if (this._settings && this._settings.get_boolean('enable-overlay-theme')) {
@@ -1127,19 +1135,54 @@ const CSSGnomeExtension = GObject.registerClass(
         }
 
         /**
-         * Recreate overlay theme
-         * Synchronously rebuilds overlay structure, applies theme only if enabled
-         * GUARDED: Prevents concurrent recreations
+         * Recreate overlay theme with Promise-based pattern (backported from v2.5.1)
+         *
+         * Returns Promise that resolves when recreation completes.
+         * Prevents concurrent recreations by reusing existing Promise.
+         *
+         * Pattern advantages:
+         * - Async wrapper around sync operations (GLib.idle_add)
+         * - Safe concurrent request handling (reuses Promise)
+         * - Enables await synchronization in color-scheme monitoring
+         * - Eliminates fixed delays (500ms → exact completion time)
+         *
+         * @returns {Promise<boolean>} Promise that resolves to success status
          */
         _recreateOverlayTheme() {
-            // Guard against concurrent recreations
+            // Guard against concurrent recreations - return existing Promise
             if (this._overlayRecreationInProgress) {
-                this._logger.debug("Overlay recreation already in progress, skipping duplicate request");
-                return;
+                this._logger.debug("Overlay recreation already in progress, returning existing Promise");
+                return this._overlayRecreationPromise;
             }
 
             this._overlayRecreationInProgress = true;
 
+            // Create Promise that resolves when recreation completes
+            this._overlayRecreationPromise = new Promise((resolve) => {
+                // Use GLib.idle_add to ensure recreation finishes before resolving
+                GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                    try {
+                        this._performOverlayRecreation();
+                        resolve(true);
+                    } catch (error) {
+                        this._logger.error("Error in overlay recreation: " + error.toString());
+                        resolve(false);
+                    } finally {
+                        this._overlayRecreationInProgress = false;
+                        this._overlayRecreationPromise = null;
+                    }
+                    return GLib.SOURCE_REMOVE;
+                });
+            });
+
+            return this._overlayRecreationPromise;
+        }
+
+        /**
+         * Perform overlay recreation (internal - called by _recreateOverlayTheme Promise)
+         * @private
+         */
+        _performOverlayRecreation() {
             try {
                 this._logger.info("Recreating overlay theme");
 
@@ -1163,33 +1206,26 @@ const CSSGnomeExtension = GObject.registerClass(
                         // Apply overlay theme (set gtk-theme to CSSGnomme)
                         this._interfaceSettings.set_string("gtk-theme", this._overlayManager.overlayName);
 
-                        // Force Shell theme reload (clear + set trick to bypass cache)
+                        // Force Shell theme reload using Main.loadTheme() API (GNOME 43+)
+                        // Pattern backported from v2.5.1 - instant reload, no flicker
                         if (this._shellSettings) {
                             try {
-                                const currentShellTheme = this._shellSettings.get_string("name");
+                                // Set shell theme name in GSettings (user-theme reads this)
+                                this._shellSettings.set_string("name", this._overlayManager.overlayName);
+                                this._logger.info("Shell theme GSettings updated to overlay");
 
-                                if (currentShellTheme === this._overlayManager.overlayName) {
-                                    // Already using overlay → force reload via temporary switch
-                                    this._logger.info("Forcing Shell theme reload (already active, using clear+set trick)");
-                                    this._shellSettings.set_string("name", "");
-
-                                    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
-                                        this._shellSettings.set_string("name", this._overlayManager.overlayName);
-                                        this._logger.debug("Shell theme reloaded successfully");
-                                        return GLib.SOURCE_REMOVE;
-                                    });
-                                } else {
-                                    // Different theme → normal set triggers reload
-                                    this._shellSettings.set_string("name", this._overlayManager.overlayName);
-                                    this._logger.info("Shell theme set to overlay (first-time apply)");
-                                }
+                                // Force immediate reload using Main API (no cache delay)
+                                Main.loadTheme();
+                                this._logger.debug("Shell theme reloaded via Main.loadTheme() - instant refresh");
                             } catch (e) {
-                                this._logger.error("Failed to set shell theme: " + e.message);
+                                this._logger.error("Failed to reload shell theme: " + e.message);
                             }
                         } else {
                             this._logger.warn("Shell theme settings not available (user-theme extension not installed)");
                         }
-                    }                    // Get newly detected accent color to show in notification
+                    }
+
+                    // Get newly detected accent color to show in notification
                     const borderColor = this._settings.get_string("blur-border-color");
                     const match = borderColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
                     const colorHint = match ? ` (accent: rgb(${match[1]}, ${match[2]}, ${match[3]}))` : "";
@@ -1207,9 +1243,6 @@ const CSSGnomeExtension = GObject.registerClass(
             } catch (error) {
                 this._logger.error("Error recreating overlay", error.toString());
                 this._notify("CSSGnomme", _("Error: ") + error.message);
-            } finally {
-                // Always clear flag, even on error
-                this._overlayRecreationInProgress = false;
             }
         }
 

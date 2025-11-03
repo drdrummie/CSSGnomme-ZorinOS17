@@ -1,7 +1,7 @@
 # 🚀 CSS Gnomme Quick Guide (ZorinOS 17)
 
-**Version:** v1.4 (GNOME 43-44)
-**Last Updated:** October 23, 2025
+**Version:** v1.5.4 (GNOME 43-44)
+**Last Updated:** November 3, 2025
 
 ---
 
@@ -11,9 +11,9 @@ CSS Gnomme is a powerful GNOME Shell extension that creates a **dynamic overlay 
 
 **Key Features:**
 
+- 🔄 **Dynamic theme overlay** that adapts to your background
 - 🎨 **Automatic color extraction** from your wallpaper
 - 🌫️ **Advanced blur effects** for panels and menus
-- 🔄 **Dynamic theme overlay** that adapts to your background
 - 🖥️ **Zorin OS integration** for seamless taskbar styling
 - ⚡ **Live updates** when you change settings
 
@@ -38,10 +38,9 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
   - CSS Gnomme will inherit this theme's styling and apply your customizations on top
   - **Tip:** Use Fluent-based themes (ZorinBlue, ZorinPurple) for best results on Zorin OS
 
-- **Enable Zorin OS Integration**: Special enhancements for Zorin Taskbar
-  - Enables floating panel effect when border-radius is applied
-  - Adds Zorin-specific styling improvements
-  - **Recommended:** Enable if you're using Zorin OS 17
+- **Auto-detect theme border radius**: Automatically match your theme's rounded corners
+  - ✅ ON: CSS Gnomme detects border-radius from active theme
+  - ❌ OFF: Use manual Border Radius slider in Color Settings
 
 #### Automatic Color Extraction
 
@@ -81,12 +80,18 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
   - Controls application menus, system menus, and dropdown panels
   - **Tip:** Keep this higher than panel (85-95%) for readability
 
+- **Tint strength** (0-100%): Zorin theme tint neutralization
+  - **0%**: Completely neutral (gray/beige base colors)
+  - **50%**: Half neutralized (subtle theme colors remain)
+  - **100%**: Original Zorin theme colors (blue, green, purple, etc.)
+  - **Use case:** Create neutral base while keeping wallpaper-driven accents
+
 #### Panel Appearance
 
 - **Enable bordered floating mode**: Control whether panel itself gets rounded
-  - ✅ ON: Panel has rounded corners (enables Zorin floating panel effect by turnng intellihide on)
+  - ✅ ON: Panel has rounded corners (enables Zorin floating panel effect by turning intellihide on)
   - ❌ OFF: Only menus/popups are rounded
-  - **Note**: Zorin uses inline css so currently extension cannot control panel's border-radius
+  - **Note**: Zorin uses inline CSS so currently extension cannot control panel's border-radius
 
 - **Override panel color**: Use custom color instead of extracted wallpaper color
   - Enable to manually choose panel background color
@@ -107,10 +112,6 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
   - **0px**: Square corners (flat design)
   - **8-12px**: Moderately rounded (modern)
   - **15-25px**: Heavily rounded (macOS-style)
-
-- **Auto-detect theme border radius**: Automatically match your theme's rounded corners
-  - ✅ ON: CSS Gnomme detects border-radius from active theme
-  - ❌ OFF: Use manual Border Radius slider in Color Settings
 
 ---
 
@@ -163,10 +164,15 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 
 #### Shadow Effects
 
-- **Shadow strength** (0.0-0.8): Intensity of drop shadow
+- **Shadow strength** (0.0-1.0): Intensity of drop shadow (**NEW in v1.5.4: dynamic calculation**)
   - **0.0**: No shadow
   - **0.3-0.5**: Subtle depth
-  - **0.8**: Strong, dramatic shadow
+  - **1.0**: Strong, dramatic shadow (30px spread)
+  - **Formula:** `baseShadow = shadowStrength × 30px` with dynamic ratios:
+    - Panel: 1.0× (full shadow)
+    - Popup: 0.67× (lighter)
+    - Buttons: 0.67× (matching popups)
+    - Inset: 1.25× (stronger depth)
 
 - **Shadow color**: Color of drop shadow
   - Automatically set based on theme (dark shadow for light themes, vice versa)
@@ -174,25 +180,48 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 
 ---
 
-### ⚙️ Page 4: Advanced
+### ⚙️ Page 4: Advanced Settings
 
-**Power-user settings and debugging options.**
+**Power-user settings, Zorin integration, icon theme override, automation, and debugging.**
 
-#### System Tray
+#### Interface Behavior
 
 - **Hide system tray indicator**: Remove CSS Gnomme icon from top panel
   - Settings still accessible via Extensions app
   - **Use case:** Minimize clutter after setup is complete
 
-#### Automation
+- **Enable notifications**: Show desktop notifications for theme changes
+  - ✅ ON: Notifications for color extraction, theme switches, errors
+  - ❌ OFF: Silent operation (recommended after initial setup)
 
-- **Auto-switch color scheme**: Automatically switch between Light/Dark theme variants
+- **Enable Zorin OS Integration**: Special enhancements for Zorin Taskbar (**MOVED from Theme Overlay page**)
+  - Enables floating panel effect when border-radius is applied
+  - Adds Zorin-specific styling improvements
+  - For Fluent GTK themes, adds Zorin-style CSS enhancements
+  - **Recommended:** Enable if you're using Zorin OS 17
+
+#### Icon Theme Override (**NEW in v1.5.4**)
+
+- **Manual icon theme selection**: Override default icon theme with custom choice
+  - ✅ ON: Manually select icon theme from dropdown
+  - ❌ OFF: Auto-detect icon theme from source GTK theme (default)
+
+- **Select icon theme**: Dropdown with all installed icon themes
+  - Scans `/usr/share/icons` and `~/.local/share/icons`
+  - **Use case:** Mix Fluent GTK theme with different icon set
+  - **Example:** Fluent-round-teal-Dark (GTK) + Fluent-Dark icons (manually selected)
+  - Only active when "Manual icon theme selection" is enabled
+
+#### Automation Features
+
+- **Auto-switch between Light/Dark variants**: Automatically switch between Light/Dark theme variants
   - ✅ ON: Detects system Dark Mode toggle, switches to matching theme variant
   - Example: ZorinPurple-Light ↔ ZorinPurple-Dark
   - **Note:** Dropdown will only show matching variants (Light OR Dark, not both)
 
-  - **Full auto mode (experimental)**: Wallpaper driven mode for shell elements
-  - ✅ ON: Uses wallpaper dominant colors to set color of shell elements
+- **Full Auto Mode (experimental)**: Wallpaper-driven mode for shell elements
+  - ✅ ON: Wallpaper controls ALL colors including blur effects (border, background, shadow)
+  - ❌ OFF: Theme controls blur effects while wallpaper controls panel/popup (default)
 
 #### Debugging
 
@@ -206,7 +235,7 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 
 **Project information, version, and How It Works explanation.**
 
-- **Version**: Current extension version
+- **Version**: Current extension version (v1.5.4)
 - **How It Works**: Detailed explanation of overlay system, color extraction, and CSS generation
 
 ---
@@ -217,7 +246,6 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
 
 1. **Page 1 (Theme Overlay)**:
    - ✅ Enable **Enable Overlay Theme**
-   - ✅ Enable **Enable Zorin OS Integration** (if on Zorin OS)
    - ✅ Enable **Auto-detect colors on wallpaper change**
    - Select your preferred **Base Theme**
 
@@ -226,7 +254,10 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
    - Adjust **Border Radius** (try 12px)
    - ✅ Enable **Apply border radius to main panel** for floating effect
 
-3. **Done!** Colors will auto-extract from wallpaper.
+3. **Page 4 (Advanced Settings)**:
+   - ✅ Enable **Enable Zorin OS Integration** (if on Zorin OS)
+
+4. **Done!** Colors will auto-extract from wallpaper.
 
 ### Full Customization (15 minutes)
 
@@ -235,9 +266,13 @@ Access settings by clicking the **CSS Gnomme icon** in your system tray → **"O
    - Set **Blur radius** (try 30px)
    - Adjust **Saturation** (try 1.2)
    - Fine-tune **Blur opacity** (try 0.8)
+   - Adjust **Shadow strength** (try 0.4) ← **NEW dynamic slider**
 3. **Page 2** (return here):
    - Experiment with **Override panel color** if needed
-4. **Test**: Change wallpaper and watch auto-extraction work!
+   - Adjust **Tint strength** to neutralize Zorin theme colors (try 0%)
+4. **Page 4** (Advanced):
+   - Try **Manual icon theme selection** to mix GTK and icon themes
+5. **Test**: Change wallpaper and watch auto-extraction work!
 
 ---
 
@@ -252,6 +287,7 @@ For **frosted glass effect** (macOS-style):
 - Contrast: 0.9-1.0
 - Brightness: 1.1 (light themes) / 0.9 (dark themes)
 - Blur opacity: 0.8-0.9
+- Shadow strength: 0.4-0.5
 
 For **subtle transparency** (Windows 11-style):
 
@@ -260,14 +296,22 @@ For **subtle transparency** (Windows 11-style):
 - Contrast: 1.0
 - Brightness: 1.0
 - Blur opacity: 0.6-0.7
+- Shadow strength: 0.3
 
 ### Floating Panel Tips
 
 - Set **Border Radius** to 8-12px
 - ✅ Enable **Apply border radius to main panel**
-- ✅ Enable **Enable Zorin OS Integration** for floating effect
+- ✅ Enable **Enable Zorin OS Integration** (Page 4) for floating effect
 - Adjust **Panel Opacity** to 0.8-0.9
 - Result: Modern floating taskbar (Zorin style)
+
+### Tint Neutralization Tips (**NEW in v1.5.4**)
+
+- **Problem:** ZorinBlue theme too blue, want neutral base?
+- **Solution:** Set **Tint strength** to 0% (Page 2)
+- **Result:** Neutral gray base + wallpaper accent colors
+- **Perfect for:** Wallpaper-driven color schemes on Zorin themes
 
 ### Color Extraction Tips
 
@@ -275,6 +319,14 @@ For **subtle transparency** (Windows 11-style):
 - **Too colorful?** Lower **Saturation multiplier**
 - **Wrong colors?** Click **Extract Colors Now** to re-analyze wallpaper
 - **Manual override?** Disable auto-extraction, use **Override panel color**
+
+### Icon Theme Mixing Tips (**NEW in v1.5.4**)
+
+- **Want Fluent GTK with different icons?**
+  - Page 1: Select Fluent-round-teal-Dark (Base Theme)
+  - Page 4: ✅ Enable **Manual icon theme selection**
+  - Page 4: Choose desired icon theme (e.g., Papirus-Dark)
+- **Auto-detect not working?** Manual override ensures correct icon theme
 
 ### Performance Tips
 
@@ -285,6 +337,23 @@ For **subtle transparency** (Windows 11-style):
 ---
 
 ## 🐛 Troubleshooting
+
+### Overlay looks broken or messed up
+
+**Symptom:** Theme appears corrupted, colors wrong, or UI elements broken
+
+**Solution (Full Reset):**
+
+1. **Disable Overlay**: Open CSS Gnomme settings → Turn OFF "Enable Overlay Theme"
+2. **Choose Base Theme**: Go to Zorin Appearance settings → Select the theme you want
+3. **Select in Extension**: Open CSS Gnomme settings → Choose same theme in "Base Theme" dropdown
+4. **Enable Overlay**: Turn ON "Enable Overlay Theme"
+5. **Recreate**: Click "Recreate Overlay Theme" button
+
+**Also Try (if above doesn't help):**
+
+- Try **Enable/Disable toggle** several times (sometimes one cycle is enough)
+- Or use **Apply Changes Now** button to force refresh
 
 ### Colors not extracting
 
@@ -325,6 +394,29 @@ For **subtle transparency** (Windows 11-style):
 1. Click **Apply Changes Now** (Page 1)
 2. Restart GNOME Shell: `Alt+F2` → type `r` → Enter (X11 only)
 3. On Wayland: Log out and log back in
+
+### Shadow not visible (**NEW in v1.5.4**)
+
+**Symptom:** Shadow strength slider doesn't change shadow appearance
+
+**Solution:**
+
+1. Increase **Shadow strength** to 0.5-1.0 (Page 3)
+2. Check **Shadow color** is not transparent (Page 3)
+3. Verify panel has sufficient transparency to see shadow (Page 2)
+4. **Note:** v1.5.4 fixed dynamic shadow calculation bug (was hardcoded before)
+5. Combine with Blur Opacity setting
+
+### Wrong icon theme applied (**NEW in v1.5.4**)
+
+**Symptom:** Icons don't match expected theme after overlay enable
+
+**Solution:**
+
+1. Page 4: ✅ Enable **Manual icon theme selection**
+2. Page 4: Select correct icon theme from dropdown
+3. Click **Apply Changes Now** (Page 1)
+4. **Note:** v1.5.4 fixed icon theme detection bug
 
 ### Memory issues (GNOME 43 specific)
 

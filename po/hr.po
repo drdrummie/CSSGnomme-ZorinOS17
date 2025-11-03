@@ -1,0 +1,639 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-03 17:57+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/extension.js:120
+msgid "Extract Colors from Background"
+msgstr "Izvuci boje iz pozadine"
+
+#: src/extension.js:126 src/extension.js:163
+msgid "Enable GTK Theme Overlay"
+msgstr "Omogući GTK temu prekrivanja"
+
+#: src/extension.js:131
+msgid "Apply Overlay Changes"
+msgstr "Primijeni promjene prekrivanja"
+
+#: src/extension.js:139
+msgid "Open Settings"
+msgstr "Otvori postavke"
+
+#: src/extension.js:864
+msgid "Colors extracted and applied from background image"
+msgstr "Boje izvučene i primijenjene iz pozadinske slike"
+
+#: src/extension.js:871
+msgid "No background image found or unable to extract colors"
+msgstr "Nije pronađena pozadinska slika ili nije moguće izvući boje"
+
+#: src/extension.js:876
+msgid "Error extracting colors: "
+msgstr "Greška pri izvlačenju boja: "
+
+#: src/extension.js:984
+msgid "Overlay theme is not enabled"
+msgstr "Tema prekrivanja nije omogućena"
+
+#: src/extension.js:1012
+msgid "Overlay theme updated successfully"
+msgstr "Tema prekrivanja uspješno ažurirana"
+
+#: src/extension.js:1015
+msgid "Failed to update overlay theme"
+msgstr "Neuspjelo ažuriranje teme prekrivanja"
+
+#: src/extension.js:1020 src/extension.js:1245
+msgid "Error: "
+msgstr "Greška: "
+
+#: src/extension.js:1073
+msgid "Overlay theme created and activated"
+msgstr "Tema prekrivanja stvorena i aktivirana"
+
+#: src/extension.js:1076
+msgid "Failed to create overlay theme"
+msgstr "Neuspjelo stvaranje teme prekrivanja"
+
+#: src/extension.js:1102
+msgid "Error enabling overlay: "
+msgstr "Greška pri omogućavanju prekrivanja: "
+
+#: src/extension.js:1130
+msgid "Overlay theme disabled"
+msgstr "Tema prekrivanja onemogućena"
+
+#: src/extension.js:1133
+msgid "Error disabling overlay: "
+msgstr "Greška pri onemogućavanju prekrivanja: "
+
+#: src/extension.js:1235
+msgid "Overlay theme recreated and applied"
+msgstr "Tema prekrivanja ponovno stvorena i primijenjena"
+
+#: src/extension.js:1236
+msgid "Overlay theme recreated (enable to apply)"
+msgstr "Tema prekrivanja ponovno stvorena (omogućite za primjenu)"
+
+#: src/extension.js:1240
+msgid "Failed to recreate overlay"
+msgstr "Neuspjelo ponovno stvaranje prekrivanja"
+
+#: src/prefs.js:224
+msgid "Theme Overlay"
+msgstr "Tema prekrivanja"
+
+#: src/prefs.js:230
+msgid "Theme Integration"
+msgstr "Integracija teme"
+
+#: src/prefs.js:231
+msgid ""
+"CSS Gnomme creates a dynamic overlay theme that sits on top of your current "
+"theme"
+msgstr ""
+"CSS Gnomme stvara dinamičku temu prekrivanja koja se nalazi iznad vaše "
+"trenutne teme"
+
+#: src/prefs.js:236
+msgid "Enable Overlay Theme"
+msgstr "Omogući temu prekrivanja"
+
+#: src/prefs.js:237
+msgid "Activate CSS Gnomme overlay with custom styling and color extraction"
+msgstr ""
+"Aktiviraj CSS Gnomme prekrivanje s prilagođenim stilom i izvlačenjem boja"
+
+#: src/prefs.js:249
+msgid "Base Theme"
+msgstr "Osnovna tema"
+
+#: src/prefs.js:250
+msgid "Select the theme to use as foundation for overlay"
+msgstr "Odaberite temu koja će se koristiti kao temelj za prekrivanje"
+
+#: src/prefs.js:409
+msgid "Overlay Status"
+msgstr "Status prekrivanja"
+
+#: src/prefs.js:410
+msgid "Checking..."
+msgstr "Provjera..."
+
+#: src/prefs.js:421
+msgid "Inactive - Enable overlay to apply custom theme"
+msgstr "Neaktivno - Omogućite prekrivanje za primjenu prilagođene teme"
+
+#: src/prefs.js:435
+msgid "Auto-detect theme border radius"
+msgstr "Automatski otkrij radijus obruba teme"
+
+#: src/prefs.js:436
+msgid "Automatically detect and use border-radius from current theme"
+msgstr "Automatski otkrijte i koristite border-radius iz trenutne teme"
+
+#: src/prefs.js:448 src/prefs.js:1216
+msgid "Automatic Color Extraction"
+msgstr "Automatsko izvlačenje boja"
+
+#: src/prefs.js:453
+msgid "Auto-detect colors on wallpaper change"
+msgstr "Automatski otkrij boje pri promjeni pozadine"
+
+#: src/prefs.js:454
+msgid ""
+"Automatically extract and apply colors when you change your desktop "
+"background"
+msgstr ""
+"Automatski izvucite i primijenite boje kada promijenite pozadinu radne "
+"površine"
+
+#: src/prefs.js:466
+msgid "Extract Colors Now"
+msgstr "Izvuci boje sada"
+
+#: src/prefs.js:467
+msgid "Manually trigger color extraction from current wallpaper"
+msgstr "Ručno pokrenite izvlačenje boja iz trenutne pozadine"
+
+#: src/prefs.js:470
+msgid "Extract from Wallpaper"
+msgstr "Izvuci iz pozadine"
+
+#: src/prefs.js:486
+msgid "Manual Controls"
+msgstr "Ručne kontrole"
+
+#: src/prefs.js:491
+msgid "Apply Changes Now"
+msgstr "Primijeni promjene sada"
+
+#: src/prefs.js:492
+msgid "Manually update overlay theme (auto-update has 2s delay)"
+msgstr ""
+"Ručno ažurirajte temu prekrivanja (automatsko ažuriranje ima 2s kašnjenja)"
+
+#: src/prefs.js:496
+msgid "Apply"
+msgstr "Primijeni"
+
+#: src/prefs.js:518
+msgid "Overlay Update Triggered"
+msgstr "Pokrenuto ažuriranje prekrivanja"
+
+#: src/prefs.js:519
+msgid "The theme overlay has been updated with your current settings."
+msgstr "Tema prekrivanja je ažurirana s vašim trenutnim postavkama."
+
+#: src/prefs.js:531
+msgid "Recreate Overlay"
+msgstr "Ponovno stvori prekrivanje"
+
+#: src/prefs.js:532
+msgid "Delete and recreate entire overlay (useful if base theme changed)"
+msgstr ""
+"Izbrišite i ponovno stvorite cijelo prekrivanje (korisno ako se osnovna tema "
+"promijenila)"
+
+#: src/prefs.js:536
+msgid "Recreate"
+msgstr "Ponovno stvori"
+
+#: src/prefs.js:554
+msgid "Overlay Recreation Triggered"
+msgstr "Pokrenuto ponovno stvaranje prekrivanja"
+
+#: src/prefs.js:555
+msgid ""
+"The theme overlay is being completely rebuilt from the selected base theme."
+msgstr "Tema prekrivanja se potpuno ponovno gradi iz odabrane osnovne teme."
+
+#: src/prefs.js:571
+msgid "Color Settings"
+msgstr "Postavke boja"
+
+#: src/prefs.js:577
+msgid "Basic Transparency Controls"
+msgstr "Osnovne kontrole transparentnosti"
+
+#: src/prefs.js:582
+msgid "Panel Opacity"
+msgstr "Neprozirnost panela"
+
+#: src/prefs.js:583
+msgid "Adjust the transparency of the main panel (taskbar)"
+msgstr "Prilagodite transparentnost glavnog panela (trake zadataka)"
+
+#: src/prefs.js:602
+msgid "Menu Opacity"
+msgstr "Neprozirnost izbornika"
+
+#: src/prefs.js:603
+msgid "Adjust the transparency of popup menus"
+msgstr "Prilagodite transparentnost skočnih izbornika"
+
+#: src/prefs.js:622
+msgid "Zorin Theme Tint Strength (%)"
+msgstr "Jačina nijanse Zorin teme (%)"
+
+#: src/prefs.js:623
+msgid ""
+"Control color tint intensity for Zorin themes (0% = neutral grey, 100% = "
+"original theme color). Only affects Zorin themes like ZorinBlue, ZorinGreen, "
+"etc."
+msgstr "Kontrolira jačinu nijanse pozadine Zorin teme (0% = neutralna siva, "
+"100% = orirganl boja nijansi). Radi samo sa Zorin temama kao ZorinBlue, "
+"ZorinGreen, itd.."
+
+#: src/prefs.js:647
+msgid "Panel Appearance"
+msgstr "Izgled panela"
+
+#: src/prefs.js:652
+msgid "Enable bordered floating mode"
+msgstr "Omogući plutajući način s obrubom"
+
+#: src/prefs.js:653
+msgid "Enables bordered floating mode with intellihide activated"
+msgstr "Omogućava plutajući način s obrubom i aktiviranim intellihide-om"
+
+#: src/prefs.js:663
+msgid "Override panel color"
+msgstr "Nadjačaj boju panela"
+
+#: src/prefs.js:664
+msgid "Use custom color for panel background instead of theme color"
+msgstr "Koristite prilagođenu boju za pozadinu panela umjesto boje teme"
+
+#: src/prefs.js:674
+msgid "Choose override panel color"
+msgstr "Odaberite nadjačanu boju panela"
+
+#: src/prefs.js:675
+msgid "Select background color for panel when override is enabled"
+msgstr "Odaberite boju pozadine za panel kada je nadjačavanje omogućeno"
+
+#: src/prefs.js:709
+msgid "Override popup color"
+msgstr "Nadjačaj boju skočnih prozora"
+
+#: src/prefs.js:710
+msgid "Use custom color for popup menu backgrounds"
+msgstr "Koristite prilagođenu boju za pozadine skočnih izbornika"
+
+#: src/prefs.js:720
+msgid "Choose override popup color"
+msgstr "Odaberite nadjačanu boju skočnih prozora"
+
+#: src/prefs.js:721
+msgid "Select background color for popup menus when override is enabled"
+msgstr ""
+"Odaberite boju pozadine za skočne izbornike kada je nadjačavanje omogućeno"
+
+#: src/prefs.js:755
+msgid "Border Radius"
+msgstr "Radijus obruba"
+
+#: src/prefs.js:756
+msgid "Rounded corners for panels and menus"
+msgstr "Zaobljeni kutovi za panele i izbornike"
+
+#: src/prefs.js:777
+msgid "Blur Effects"
+msgstr "Efekti zamućenja"
+
+#: src/prefs.js:783
+msgid "Custom Blur and Border Settings"
+msgstr "Prilagođene postavke zamućenja i obruba"
+
+#: src/prefs.js:788
+msgid "Blur radius"
+msgstr "Radijus zamućenja"
+
+#: src/prefs.js:789
+msgid "Controls the intensity of the blur effect"
+msgstr "Kontrolira intenzitet efekta zamućenja"
+
+#: src/prefs.js:806
+msgid "Saturation multiplier"
+msgstr "Multiplikator zasićenosti"
+
+#: src/prefs.js:807
+msgid "Adjusts color vibrancy in the blurred background"
+msgstr "Prilagođava živost boja u zamućenoj pozadini"
+
+#: src/prefs.js:825
+msgid "Contrast multiplier"
+msgstr "Multiplikator kontrasta"
+
+#: src/prefs.js:826
+msgid "Controls the difference between light and dark areas"
+msgstr "Kontrolira razliku između svijetlih i tamnih područja"
+
+#: src/prefs.js:844
+msgid "Brightness multiplier"
+msgstr "Multiplikator svjetline"
+
+#: src/prefs.js:845
+msgid "Modifies the overall lightness of the blurred layer"
+msgstr "Mijenja ukupnu svjetlinu zamućenog sloja"
+
+#: src/prefs.js:863
+msgid "Background color/tint"
+msgstr "Boja pozadine/ton"
+
+#: src/prefs.js:864
+msgid "Adds a tint overlay to the blur effect"
+msgstr "Dodaje ton prekrivanja efektu zamućenja"
+
+#: src/prefs.js:898
+msgid "Border color"
+msgstr "Boja obruba"
+
+#: src/prefs.js:899
+msgid "Sets the color of the subtle border framing the blurred elements"
+msgstr "Postavlja boju suptilnog obruba koji okružuje zamućene elemente"
+
+#: src/prefs.js:933
+msgid "Border width"
+msgstr "Širina obruba"
+
+#: src/prefs.js:934
+msgid "Defines the thickness of the border around blurred elements"
+msgstr "Definira debljinu obruba oko zamućenih elemenata"
+
+#: src/prefs.js:953
+msgid "Shadow Settings"
+msgstr "Postavke sjene"
+
+#: src/prefs.js:958
+msgid "Shadow strength"
+msgstr "Jačina sjene"
+
+#: src/prefs.js:959
+msgid ""
+"Controls outer glow spread around panels and menus (0.0 = no shadow, 0.8 = "
+"wide halo)"
+msgstr ""
+"Kontrolira širenje vanjskog sjaja oko panela i izbornika (0.0 = bez sjene, "
+"0.8 = široki halo)"
+
+#: src/prefs.js:977
+msgid "Shadow color"
+msgstr "Boja sjene"
+
+#: src/prefs.js:978
+msgid ""
+"Sets the base color of shadows, automatically adjusted for light/dark themes"
+msgstr ""
+"Postavlja osnovnu boju sjena, automatski prilagođenu za svijetle/tamne teme"
+
+#: src/prefs.js:1014
+msgid "Blur opacity"
+msgstr "Neprozirnost zamućenja"
+
+#: src/prefs.js:1015
+msgid "Controls the transparency of the entire blur layer"
+msgstr "Kontrolira transparentnost cijelog sloja zamućenja"
+
+#: src/prefs.js:1036
+msgid "Advanced Settings"
+msgstr "Napredne postavke"
+
+#: src/prefs.js:1042
+msgid "Interface Behavior"
+msgstr "Postavke sučelja"
+
+#: src/prefs.js:1047
+msgid "Hide system tray indicator"
+msgstr "Sakrij indikator u sistemskoj traci"
+
+#: src/prefs.js:1048
+msgid "Hide the transparency control icon from the system tray"
+msgstr "Sakrij ikonu kontrole transparentnosti iz sistemske trake"
+
+#: src/prefs.js:1058
+msgid "Enable notifications"
+msgstr "Uključi obavijesti"
+
+#: src/prefs.js:1059
+msgid ""
+"Show desktop notifications for theme changes, color extraction, and "
+"extension events"
+msgstr ""
+"Prikaži obavijesti na radnoj površini za promjene tema i ostale događaje "
+"ekstenzije"
+
+#: src/prefs.js:1069
+msgid "Enable Zorin OS Integration"
+msgstr "Omogući integraciju Zorin OS-a"
+
+#: src/prefs.js:1070
+msgid ""
+"Integrate with Zorin OS shell components for advanced control (transparency, "
+"intellihide). For Fluent GTK themes, adds Zorin-style CSS enhancements."
+msgstr ""
+"Integracija s Zorin OS komponentama ljuske za naprednu kontrolu "
+"(transparentnost, intellihide). Za Fluent GTK teme, dodaje CSS poboljšanja u "
+"Zorin stilu."
+
+#: src/prefs.js:1082
+msgid "Icon Theme Override"
+msgstr "Nadjačavanje tema ikona"
+
+#: src/prefs.js:1083
+msgid ""
+"Enable manual selection of icon theme independently from GTK theme. Useful "
+"for themes without matching icon packs (e.g., Fluent GTK without Fluent "
+"icons)."
+msgstr "Odaberite temu ikona neovisno o odabranoj GTK temi (korisno ako "
+"referencirane ikone iz teme nedostaju i / ili nisu instalirane)"
+
+#: src/prefs.js:1093
+msgid "Icon Theme"
+msgstr "Tema ikona"
+
+#: src/prefs.js:1094
+msgid ""
+"Select icon theme when manual override is enabled. Scanned from ~/.icons, ~/."
+"local/share/icons, and /usr/share/icons."
+msgstr "Odaberite temu ikona za prekrivanje (potrebno je omogućiti Nadjačavanje "
+"tema ikona i pokrenuti ručno kreiranje prekrivanja teme)"
+
+#: src/prefs.js:1135
+msgid "Automation Features"
+msgstr "Automatizacija"
+
+#: src/prefs.js:1140
+msgid "Auto-switch between Light/Dark variants"
+msgstr "Automatski prebacuj teme između svijetlih i tamnih varijanti"
+
+#: src/prefs.js:1141
+msgid ""
+"Monitors Quick Settings Dark/Light toggle and automatically switches to "
+"matching theme variant (e.g., ZorinPurple-Light ↔ ZorinPurple-Dark). Also "
+"filters dropdown to show only matching themes."
+msgstr ""
+"Prati prekidač Dark/Light u Brzim postavkama i automatski prebacuje na "
+"odgovarajuću varijantu teme (npr. ZorinPurple-Light ↔ ZorinPurple-Dark). "
+"Također filtrira padajući izbornik da prikazuje samo odgovarajuće teme."
+
+#: src/prefs.js:1153
+msgid "Full Auto Mode"
+msgstr "Potpuno automatski način"
+
+#: src/prefs.js:1154
+msgid ""
+"Experimental: Wallpaper extraction controls ALL colors including blur "
+"effects (border, background, shadow). When disabled, theme controls blur "
+"effects while wallpaper controls panel/popup."
+msgstr ""
+"Eksperimentalno: Izvlačenje pozadine kontrolira SVE boje uključujući efekte "
+"zamućenja (obrub, pozadina, sjena). Kada je onemogućeno, tema kontrolira "
+"efekte zamućenja dok pozadina kontrolira panel/skočni prozor."
+
+#: src/prefs.js:1166
+msgid "Debugging"
+msgstr "Otklanjanje grešaka"
+
+#: src/prefs.js:1171
+msgid "Enable debug logging"
+msgstr "Omogući zapisivanje otklanjanja grešaka"
+
+#: src/prefs.js:1172
+msgid "Enable detailed logging for troubleshooting extension issues"
+msgstr "Omogući detaljno zapisivanje za rješavanje problema s ekstenzijom"
+
+#: src/prefs.js:1185
+msgid "About"
+msgstr "Informacije"
+
+#: src/prefs.js:1190
+msgid "CSS Gnommé - Dynamic GTK Theme Overlay for Zorin OS"
+msgstr "CSS Gnommé - Dinamično prekrivanje GTK Tema za Zorin OS"
+
+#: src/prefs.js:1195
+msgid "Version"
+msgstr "Verzija"
+
+#: src/prefs.js:1195
+msgid "Author"
+msgstr "Autor"
+
+#: src/prefs.js:1196
+msgid ""
+"Developed for Zorin OS 17.3 (GNOME Shell 43-44), inspired by Cinnamon CSS "
+"Panels and gnome Open Bar extensions."
+msgstr ""
+"Razvijeno za Zorin OS 17.3 (GNOME Shell 43-44), inspirirano Cinnamon CSS "
+"panelima i gnome Open Bar ekstenzijama."
+
+#: src/prefs.js:1204
+msgid "How It Works"
+msgstr "Kako radi"
+
+#: src/prefs.js:1209
+msgid "Overlay Theme System"
+msgstr "Sistem teme prekrivanja"
+
+#: src/prefs.js:1210
+msgid ""
+"Creates a dynamic overlay at ~/.themes/CSSGnomme/ that sits on top of your "
+"current theme via @import. Fully reversible, doesn't modify original theme "
+"files."
+msgstr ""
+"Stvara dinamičko prekrivanje u ~/.themes/CSSGnomme/ koje se nalazi iznad "
+"vaše trenutne teme putem @import. Potpuno reverzibilno, ne mijenja "
+"originalne datoteke teme."
+
+#: src/prefs.js:1217
+msgid ""
+"Analyzes wallpaper using K-means clustering, extracts dominant and accent "
+"colors, applies darker variants to panels and brighter variants to menus. "
+"Triggers on wallpaper change or manually."
+msgstr ""
+"Analizira pozadinu koristeći K-means grupiranje, izvlači dominantne i "
+"naglašene boje, primjenjuje tamnije varijante na panele i svjetlije "
+"varijante na izbornike. Pokreće se pri promjeni pozadine ili ručno."
+
+#: src/prefs.js:1223
+msgid "Advanced Blur Effects"
+msgstr "Napredni efekti zamućenja"
+
+#: src/prefs.js:1224
+msgid ""
+"Uses CSS backdrop-filter for frosted glass appearance. All settings (radius, "
+"saturate, contrast, brightness) dynamically read from preferences. Applies "
+"to menus, Alt+Tab, and shell elements."
+msgstr ""
+"Koristi CSS backdrop-filter za izgled zamrznutog stakla. Sve postavke "
+"(radijus, zasićenost, kontrast, svjetlina) dinamički se čitaju iz postavki. "
+"Primjenjuje se na izbornike, Alt+Tab i elemente ljuske."
+
+#: src/prefs.js:1230
+msgid "Zorin OS Integration"
+msgstr "Integracija Zorin OS-a"
+
+#: src/prefs.js:1231
+msgid ""
+"Enhanced styling for Zorin Taskbar and panels. Note: Window Preview uses "
+"inline JavaScript styles that override CSS."
+msgstr ""
+"Poboljšani stil za Zorin traku zadataka i panele. Napomena: Pregled prozora "
+"koristi inline JavaScript stilove koji nadjačavaju CSS."
+
+#: src/prefs.js:1237
+msgid "What Gets Styled"
+msgstr "Što se stilizira"
+
+#: src/prefs.js:1238
+msgid ""
+"GNOME Shell panel, Zorin taskbar, popup menus, Alt+Tab switcher, Quick "
+"Settings, notifications, OSD, and Dash. GTK3/GTK4 apps inherit base theme "
+"with optional overrides."
+msgstr ""
+"GNOME Shell panel, Zorin traka zadataka, skočni izbornici, Alt+Tab "
+"prebacivač, Brze postavke, obavijesti, OSD i Dash. GTK3/GTK4 aplikacije "
+"nasljeđuju osnovnu temu s opcionalnim nadjačavanjima."
+
+#: src/prefs.js:1244
+msgid "Known Limitations"
+msgstr "Poznata ograničenja"
+
+#: src/prefs.js:1245
+msgid ""
+"Theme switching: Flicker on theme refresh. Window Preview: Zorin Taskbar "
+"uses inline JavaScript styles that override CSS. Wayland: Shell restart "
+"requires logout. Performance: Heavy blur (radius > 40px) may impact older "
+"GPUs."
+msgstr ""
+"Prebacivanje tema: Treperenje pri osvježavanju teme. Pregled prozora: Zorin "
+"traka zadataka koristi inline JavaScript stilove koji nadjačavaju CSS. "
+"Wayland: Ponovno pokretanje ljuske zahtijeva odjavu. Performanse: Teško "
+"zamućenje (radijus > 40px) može utjecati na starije GPU-ove."
+
+#: src/prefs.js:1305
+msgid "Panel Transparency Settings"
+msgstr "Postavke transparentnosti panela"
+
+#: src/prefs.js:1314
+msgid "Panel Opacity:"
+msgstr "Neprozirnost panela:"
+
+#: src/prefs.js:1332
+msgid "Transparency"
+msgstr "Transparentnost"
